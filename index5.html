@@ -1,0 +1,3260 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Celestial Garden: Cosmic Flora Evolution</title>
+    <style>
+        :root {
+            --primary-color: #5d3fd3;
+            --secondary-color: #8066dc;
+            --accent-color: #ff5470;
+            --background-dark: #0f1c2e;
+            --background-medium: #1f2f47;
+            --background-light: #2f3f57;
+            --text-light: #e2e6fc;
+            --text-medium: #a5afd0;
+            --text-dark: #67718d;
+            --success-color: #42caaa;
+            --warning-color: #ffcb47;
+            --danger-color: #ff5757;
+            --energy-color: #f7d002;
+            --minerals-color: #2bc8e2;
+            --seeds-color: #8be04e;
+            --research-color: #b278ff;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background: linear-gradient(135deg, var(--background-dark), #131a2c);
+            color: var(--text-light);
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0.5rem;
+            display: grid;
+            grid-template-columns: 250px 1fr 300px;
+            grid-template-rows: auto 1fr auto;
+            grid-template-areas:
+                "header header header"
+                "sidebar main resources"
+                "footer footer footer";
+            gap: 1rem;
+            height: 100vh;
+        }
+
+        header {
+            grid-area: header;
+            background-color: rgba(15, 25, 40, 0.7);
+            padding: 1rem;
+            border-radius: 0.5rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+            backdrop-filter: blur(5px);
+        }
+
+        .game-title {
+            display: flex;
+            align-items: center;
+        }
+
+        .logo {
+            width: 50px;
+            height: 50px;
+            margin-right: 1rem;
+            background: linear-gradient(135deg, var(--accent-color), var(--primary-color));
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 1.5rem;
+            color: white;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+        }
+
+        h1 {
+            font-size: 1.5rem;
+            background: linear-gradient(90deg, var(--accent-color), var(--primary-color));
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin: 0;
+        }
+
+        .player-info {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .player-level {
+            background-color: var(--background-light);
+            padding: 0.25rem 0.5rem;
+            border-radius: 1rem;
+            font-size: 0.8rem;
+            font-weight: bold;
+        }
+
+        .player-name {
+            font-weight: bold;
+        }
+
+        nav {
+            grid-area: sidebar;
+            background-color: rgba(20, 30, 50, 0.7);
+            border-radius: 0.5rem;
+            padding: 1rem;
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+            overflow-y: auto;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+            backdrop-filter: blur(5px);
+        }
+
+        .nav-section {
+            margin-bottom: 1rem;
+        }
+
+        .nav-title {
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            color: var(--text-medium);
+            margin-bottom: 0.5rem;
+            letter-spacing: 1px;
+            border-bottom: 1px solid var(--background-light);
+            padding-bottom: 0.5rem;
+        }
+
+        .nav-button {
+            display: flex;
+            align-items: center;
+            padding: 0.75rem;
+            background-color: var(--background-light);
+            border: none;
+            border-radius: 0.5rem;
+            color: var(--text-light);
+            cursor: pointer;
+            transition: all 0.2s ease;
+            width: 100%;
+            text-align: left;
+            margin-bottom: 0.5rem;
+        }
+
+        .nav-button:hover {
+            background-color: var(--primary-color);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+
+        .nav-button.active {
+            background-color: var(--primary-color);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+
+        .nav-icon {
+            margin-right: 0.5rem;
+            font-size: 1.2rem;
+            width: 24px;
+            height: 24px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        main {
+            grid-area: main;
+            background-color: rgba(20, 30, 50, 0.7);
+            border-radius: 0.5rem;
+            padding: 1rem;
+            display: flex;
+            flex-direction: column;
+            overflow-y: auto;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+            backdrop-filter: blur(5px);
+        }
+
+        .view {
+            display: none;
+        }
+
+        .view.active {
+            display: block;
+        }
+
+        .resources-panel {
+            grid-area: resources;
+            background-color: rgba(20, 30, 50, 0.7);
+            border-radius: 0.5rem;
+            padding: 1rem;
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+            overflow-y: auto;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+            backdrop-filter: blur(5px);
+        }
+
+        .resource-section {
+            margin-bottom: 1rem;
+        }
+
+        .resource-title {
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            color: var(--text-medium);
+            margin-bottom: 0.5rem;
+            letter-spacing: 1px;
+            border-bottom: 1px solid var(--background-light);
+            padding-bottom: 0.5rem;
+        }
+
+        .resource-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0.5rem;
+            background-color: var(--background-light);
+            border-radius: 0.5rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .resource-name {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .resource-icon {
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 0.8rem;
+        }
+
+        .resource-icon.energy {
+            background-color: var(--energy-color);
+            color: var(--background-dark);
+        }
+
+        .resource-icon.minerals {
+            background-color: var(--minerals-color);
+            color: var(--background-dark);
+        }
+
+        .resource-icon.seeds {
+            background-color: var(--seeds-color);
+            color: var(--background-dark);
+        }
+
+        .resource-icon.research {
+            background-color: var(--research-color);
+            color: var(--background-dark);
+        }
+
+        .resource-value {
+            font-weight: bold;
+            font-variant-numeric: tabular-nums;
+        }
+
+        .resource-rate {
+            font-size: 0.7rem;
+            color: var(--text-medium);
+        }
+
+        footer {
+            grid-area: footer;
+            background-color: rgba(15, 25, 40, 0.7);
+            padding: 1rem;
+            border-radius: 0.5rem;
+            text-align: center;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+            backdrop-filter: blur(5px);
+        }
+
+        /* Garden View Styles */
+        .garden-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        .plot {
+            aspect-ratio: 1/1;
+            background-color: var(--background-light);
+            border-radius: 0.5rem;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+            transition: all 0.2s ease;
+        }
+
+        .plot:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
+        }
+
+        .plot.empty {
+            border: 2px dashed var(--text-dark);
+        }
+
+        .plot.empty:hover {
+            border-color: var(--accent-color);
+        }
+
+        .plot-content {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem;
+            position: relative;
+            z-index: 1;
+        }
+
+        .plant-image {
+            width: 60%;
+            height: 60%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-bottom: 0.5rem;
+            position: relative;
+        }
+
+        .plant-info {
+            text-align: center;
+            width: 100%;
+        }
+
+        .plant-name {
+            font-weight: bold;
+            font-size: 0.9rem;
+            margin-bottom: 0.25rem;
+        }
+
+        .plant-stage {
+            font-size: 0.7rem;
+            color: var(--text-medium);
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 4px;
+            background-color: var(--background-dark);
+            border-radius: 2px;
+            overflow: hidden;
+            margin-top: 0.5rem;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background-color: var(--primary-color);
+            width: 0%;
+            transition: width 0.5s ease;
+        }
+
+        .plot-background {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+            opacity: 0.2;
+            background-position: center;
+            background-size: cover;
+        }
+
+        .environment-controls {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 1rem;
+            gap: 1rem;
+        }
+
+        .env-control {
+            flex: 1;
+            background-color: var(--background-light);
+            border-radius: 0.5rem;
+            padding: 0.75rem;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .env-control-label {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 0.5rem;
+            font-size: 0.8rem;
+        }
+
+        .env-control-value {
+            font-weight: bold;
+            color: var(--accent-color);
+        }
+
+        .env-slider {
+            width: 100%;
+            --webkit-appearance: none;
+            height: 6px;
+            background-color: var(--background-dark);
+            border-radius: 3px;
+            outline: none;
+        }
+
+        .env-slider::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            width: 16px;
+            height: 16px;
+            border-radius: 50%;
+            background-color: var(--accent-color);
+            cursor: pointer;
+        }
+
+        /* Plant Collection View Styles */
+        .collection-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+
+        .collection-title {
+            font-size: 1.2rem;
+            font-weight: bold;
+        }
+
+        .search-filter {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .search-input {
+            padding: 0.5rem;
+            border: none;
+            border-radius: 0.5rem;
+            background-color: var(--background-light);
+            color: var(--text-light);
+        }
+
+        .search-input::placeholder {
+            color: var(--text-medium);
+        }
+
+        .filter-dropdown {
+            padding: 0.5rem;
+            border: none;
+            border-radius: 0.5rem;
+            background-color: var(--background-light);
+            color: var(--text-light);
+        }
+
+        .plant-collection {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1rem;
+        }
+
+        .collection-card {
+            background-color: var(--background-light);
+            border-radius: 0.5rem;
+            overflow: hidden;
+            transition: all 0.2s ease;
+        }
+
+        .collection-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
+        }
+
+        .collection-card-image {
+            height: 120px;
+            background-color: var(--background-medium);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+        }
+
+        .collection-card-image svg {
+            width: 60%;
+            height: 60%;
+        }
+
+        .collection-card-content {
+            padding: 1rem;
+        }
+
+        .collection-card-title {
+            font-weight: bold;
+            margin-bottom: 0.5rem;
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .collection-card-rarity {
+            font-size: 0.7rem;
+            padding: 0.1rem 0.3rem;
+            border-radius: 0.25rem;
+            background-color: var(--primary-color);
+        }
+
+        .collection-card-stats {
+            margin-top: 0.5rem;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 0.25rem;
+            font-size: 0.8rem;
+        }
+
+        .collection-card-stat {
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .collection-card-stat-label {
+            color: var(--text-medium);
+        }
+
+        /* Research View Styles */
+        .research-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1rem;
+        }
+
+        .research-card {
+            background-color: var(--background-light);
+            border-radius: 0.5rem;
+            padding: 1rem;
+            display: flex;
+            flex-direction: column;
+            transition: all 0.2s ease;
+        }
+
+        .research-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
+        }
+
+        .research-card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+
+        .research-card-title {
+            font-weight: bold;
+        }
+
+        .research-card-cost {
+            display: flex;
+            align-items: center;
+            gap: 0.25rem;
+            background-color: var(--research-color);
+            color: var(--background-dark);
+            padding: 0.25rem 0.5rem;
+            border-radius: 1rem;
+            font-size: 0.8rem;
+            font-weight: bold;
+        }
+
+        .research-card-description {
+            color: var(--text-medium);
+            margin-bottom: 1rem;
+            font-size: 0.9rem;
+            flex-grow: 1;
+        }
+
+        .research-card-benefits {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .research-benefit {
+            font-size: 0.8rem;
+            padding: 0.25rem 0.5rem;
+            border-radius: 0.25rem;
+            background-color: var(--background-medium);
+        }
+
+        .research-card-button {
+            width: 100%;
+            padding: 0.5rem;
+            border: none;
+            border-radius: 0.5rem;
+            background-color: var(--research-color);
+            color: var(--background-dark);
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .research-card-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+
+        .research-card-button:disabled {
+            background-color: var(--text-dark);
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+
+        /* Modal styles */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.7);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s ease;
+        }
+
+        .modal-overlay.active {
+            opacity: 1;
+            pointer-events: all;
+        }
+
+        .modal {
+            background-color: var(--background-medium);
+            border-radius: 1rem;
+            width: 90%;
+            max-width: 600px;
+            max-height: 90vh;
+            overflow-y: auto;
+            padding: 1.5rem;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+            transform: translateY(20px);
+            transition: transform 0.3s ease;
+        }
+
+        .modal-overlay.active .modal {
+            transform: translateY(0);
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+        }
+
+        .modal-title {
+            font-size: 1.2rem;
+            font-weight: bold;
+        }
+
+        .modal-close {
+            background: none;
+            border: none;
+            color: var(--text-medium);
+            font-size: 1.5rem;
+            cursor: pointer;
+            transition: color 0.2s ease;
+        }
+
+        .modal-close:hover {
+            color: var(--accent-color);
+        }
+
+        .modal-content {
+            margin-bottom: 1.5rem;
+        }
+
+        .modal-actions {
+            display: flex;
+            justify-content: flex-end;
+            gap: 1rem;
+        }
+
+        .modal-button {
+            padding: 0.5rem 1rem;
+            border: none;
+            border-radius: 0.5rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .modal-button.primary {
+            background-color: var(--primary-color);
+            color: var(--text-light);
+        }
+
+        .modal-button.secondary {
+            background-color: var(--background-light);
+            color: var(--text-light);
+        }
+
+        .modal-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+
+        /* Plant Selection Modal */
+        .plant-selection-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        .plant-selection-item {
+            background-color: var(--background-light);
+            border-radius: 0.5rem;
+            padding: 1rem;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .plant-selection-item:hover {
+            background-color: var(--background-dark);
+            transform: translateY(-5px);
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
+        }
+
+        .plant-selection-item.selected {
+            border: 2px solid var(--accent-color);
+            background-color: var(--background-dark);
+        }
+
+        .plant-selection-image {
+            width: 60px;
+            height: 60px;
+            margin-bottom: 0.5rem;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .plant-selection-name {
+            font-weight: bold;
+            text-align: center;
+            margin-bottom: 0.25rem;
+        }
+
+        .plant-selection-cost {
+            font-size: 0.8rem;
+            color: var(--text-medium);
+            display: flex;
+            align-items: center;
+            gap: 0.25rem;
+        }
+
+        /* Plant Detail Modal */
+        .plant-detail-header {
+            display: flex;
+            gap: 1.5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .plant-detail-image {
+            width: 100px;
+            height: 100px;
+            background-color: var(--background-light);
+            border-radius: 0.5rem;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .plant-detail-info {
+            flex-grow: 1;
+        }
+
+        .plant-detail-name {
+            font-size: 1.2rem;
+            font-weight: bold;
+            margin-bottom: 0.5rem;
+        }
+
+        .plant-detail-type {
+            font-size: 0.9rem;
+            color: var(--text-medium);
+            margin-bottom: 1rem;
+        }
+
+        .plant-detail-stats {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 0.5rem;
+        }
+
+        .plant-detail-stat {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.9rem;
+        }
+
+        .plant-detail-stat-label {
+            color: var(--text-medium);
+        }
+
+        .plant-detail-description {
+            margin-bottom: 1.5rem;
+            line-height: 1.5;
+        }
+
+        .plant-detail-yields {
+            margin-bottom: 1.5rem;
+        }
+
+        .plant-detail-yields-title {
+            font-weight: bold;
+            margin-bottom: 0.5rem;
+        }
+
+        .plant-detail-yields-list {
+            display: flex;
+            gap: 1rem;
+        }
+
+        .plant-yield {
+            display: flex;
+            align-items: center;
+            gap: 0.25rem;
+            background-color: var(--background-light);
+            padding: 0.25rem 0.5rem;
+            border-radius: 0.25rem;
+            font-size: 0.9rem;
+        }
+
+        .plant-detail-stages {
+            margin-bottom: 1.5rem;
+        }
+
+        .plant-detail-stages-title {
+            font-weight: bold;
+            margin-bottom: 0.5rem;
+        }
+
+        .stage-timeline {
+            display: flex;
+            justify-content: space-between;
+            padding: 0 1rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .stage-point {
+            position: relative;
+            width: 12px;
+            height: 12px;
+            background-color: var(--background-light);
+            border-radius: 50%;
+        }
+
+        .stage-point.active {
+            background-color: var(--accent-color);
+        }
+
+        .stage-connector {
+            position: absolute;
+            top: 50%;
+            left: 12px;
+            height: 2px;
+            background-color: var(--background-light);
+            width: calc(100% - 24px);
+            transform: translateY(-50%);
+            z-index: -1;
+        }
+
+        .stage-labels {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.8rem;
+        }
+
+        .stage-label {
+            text-align: center;
+            width: 60px;
+        }
+
+        /* Settings View Styles */
+        .settings-section {
+            background-color: var(--background-light);
+            border-radius: 0.5rem;
+            padding: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        .settings-title {
+            font-weight: bold;
+            margin-bottom: 1rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .settings-reset {
+            font-size: 0.8rem;
+            background-color: var(--danger-color);
+            color: white;
+            border: none;
+            border-radius: 0.25rem;
+            padding: 0.25rem 0.5rem;
+            cursor: pointer;
+        }
+
+        .settings-item {
+            margin-bottom: 1rem;
+        }
+
+        .settings-label {
+            display: block;
+            margin-bottom: 0.5rem;
+        }
+
+        .settings-input {
+            width: 100%;
+            padding: 0.5rem;
+            border: none;
+            border-radius: 0.5rem;
+            background-color: var(--background-medium);
+            color: var(--text-light);
+        }
+
+        .settings-checkbox {
+            margin-right: 0.5rem;
+        }
+
+        .settings-actions {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 1rem;
+        }
+
+        .settings-button {
+            padding: 0.5rem 1rem;
+            border: none;
+            border-radius: 0.5rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .settings-button.save {
+            background-color: var(--success-color);
+            color: var(--background-dark);
+        }
+
+        .settings-button.export {
+            background-color: var(--primary-color);
+            color: var(--text-light);
+        }
+
+        .settings-button.import {
+            background-color: var(--secondary-color);
+            color: var(--text-light);
+        }
+
+        /* Toast notification */
+        .toast-container {
+            position: fixed;
+            bottom: 2rem;
+            right: 2rem;
+            z-index: 1000;
+        }
+
+        .toast {
+            background-color: var(--background-dark);
+            color: var(--text-light);
+            padding: 0.75rem 1rem;
+            border-radius: 0.5rem;
+            margin-bottom: 0.5rem;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+            display: flex;
+            align-items: center;
+            transform: translateX(120%);
+            transition: transform 0.3s ease;
+            animation: slide-in 0.3s forwards, fade-out 0.3s 2.7s forwards;
+        }
+
+        @keyframes slide-in {
+            100% { transform: translateX(0); }
+        }
+
+        @keyframes fade-out {
+            100% { opacity: 0; }
+        }
+
+        .toast.success {
+            border-left: 4px solid var(--success-color);
+        }
+
+        .toast.warning {
+            border-left: 4px solid var(--warning-color);
+        }
+
+        .toast.error {
+            border-left: 4px solid var(--danger-color);
+        }
+
+        .toast-icon {
+            margin-right: 0.5rem;
+        }
+
+        /* Loading screen */
+        .loading-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: var(--background-dark);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            z-index: 2000;
+            transition: opacity 0.5s ease;
+        }
+
+        .loading-container {
+            text-align: center;
+        }
+
+        .loading-logo {
+            width: 120px;
+            height: 120px;
+            margin-bottom: 2rem;
+            background: linear-gradient(135deg, var(--accent-color), var(--primary-color));
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 3rem;
+            color: white;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0% {
+                transform: scale(1);
+                box-shadow: 0 0 20px rgba(255, 84, 112, 0.5);
+            }
+            50% {
+                transform: scale(1.05);
+                box-shadow: 0 0 30px rgba(255, 84, 112, 0.7);
+            }
+            100% {
+                transform: scale(1);
+                box-shadow: 0 0 20px rgba(255, 84, 112, 0.5);
+            }
+        }
+
+        .loading-text {
+            font-size: 1.2rem;
+            margin-bottom: 1rem;
+        }
+
+        .loading-progress {
+            width: 300px;
+            height: 6px;
+            background-color: var(--background-light);
+            border-radius: 3px;
+            overflow: hidden;
+            margin-bottom: 2rem;
+        }
+
+        .loading-progress-bar {
+            height: 100%;
+            background: linear-gradient(90deg, var(--accent-color), var(--primary-color));
+            width: 0%;
+            transition: width 0.3s ease;
+        }
+
+        /* Introduction Modal */
+        .intro-modal {
+            background-color: var(--background-medium);
+            border-radius: 1rem;
+            width: 90%;
+            max-width: 700px;
+            max-height: 90vh;
+            overflow-y: auto;
+            padding: 2rem;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+        }
+
+        .intro-logo {
+            width: 100px;
+            height: 100px;
+            margin-bottom: 1rem;
+            background: linear-gradient(135deg, var(--accent-color), var(--primary-color));
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 2.5rem;
+            color: white;
+        }
+
+        .intro-title {
+            font-size: 1.8rem;
+            margin-bottom: 1rem;
+            background: linear-gradient(90deg, var(--accent-color), var(--primary-color));
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .intro-subtitle {
+            font-size: 1.1rem;
+            margin-bottom: 2rem;
+            color: var(--text-medium);
+        }
+
+        .intro-description {
+            line-height: 1.6;
+            margin-bottom: 2rem;
+            color: var(--text-light);
+            max-width: 600px;
+        }
+
+        .intro-features {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+            width: 100%;
+        }
+
+        .intro-feature {
+            background-color: var(--background-light);
+            border-radius: 0.5rem;
+            padding: 1rem;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+        }
+
+        .intro-feature-icon {
+            width: 50px;
+            height: 50px;
+            background-color: var(--primary-color);
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-bottom: 0.75rem;
+            font-size: 1.5rem;
+            color: white;
+        }
+
+        .intro-feature-title {
+            font-weight: bold;
+            margin-bottom: 0.5rem;
+        }
+
+        .intro-feature-text {
+            font-size: 0.9rem;
+            color: var(--text-medium);
+        }
+
+        .start-button {
+            padding: 0.75rem 2rem;
+            background: linear-gradient(90deg, var(--accent-color), var(--primary-color));
+            border: none;
+            border-radius: 2rem;
+            color: white;
+            font-weight: bold;
+            font-size: 1.1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(255, 84, 112, 0.3);
+        }
+
+        .start-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(255, 84, 112, 0.5);
+        }
+
+        /* Responsive styles */
+        @media screen and (max-width: 1200px) {
+            .container {
+                grid-template-columns: 220px 1fr 250px;
+            }
+            
+            .garden-grid {
+                grid-template-columns: repeat(3, 1fr);
+            }
+        }
+
+        @media screen and (max-width: 992px) {
+            .container {
+                grid-template-columns: 200px 1fr;
+                grid-template-areas:
+                    "header header"
+                    "sidebar main"
+                    "resources resources"
+                    "footer footer";
+            }
+            
+            .garden-grid {
+                grid-template-columns: repeat(3, 1fr);
+            }
+            
+            .plant-collection {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            
+            .research-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .intro-features {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media screen and (max-width: 768px) {
+            .container {
+                grid-template-columns: 1fr;
+                grid-template-areas:
+                    "header"
+                    "main"
+                    "sidebar"
+                    "resources"
+                    "footer";
+            }
+            
+            header {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            
+            .player-info {
+                margin-top: 0.5rem;
+                width: 100%;
+                justify-content: space-between;
+            }
+            
+            .garden-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            
+            .environment-controls {
+                flex-direction: column;
+            }
+            
+            .plant-selection-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            
+            .plant-detail-header {
+                flex-direction: column;
+                align-items: center;
+                text-align: center;
+            }
+            
+            .plant-detail-stats {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media screen and (max-width: 576px) {
+            .garden-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .collection-header {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            
+            .search-filter {
+                width: 100%;
+                margin-top: 0.5rem;
+            }
+            
+            .plant-collection {
+                grid-template-columns: 1fr;
+            }
+            
+            .plant-selection-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Loading screen -->
+    <!-- <div class="loading-overlay" id="loading-overlay">
+        <div class="loading-container">
+            <div class="loading-logo">🌱</div>
+            <div class="loading-text">Loading Celestial Garden...</div>
+            <div class="loading-progress">
+                <div class="loading-progress-bar" id="loading-progress-bar"></div>
+            </div>
+        </div>
+    </div> -->
+
+    <!-- Introduction modal -->
+    <div class="modal-overlay" id="intro-modal-overlay">
+        <div class="intro-modal">
+            <div class="intro-logo">🌱</div>
+            <h1 class="intro-title">Celestial Garden</h1>
+            <h2 class="intro-subtitle">Cosmic Flora Evolution</h2>
+            <p class="intro-description">
+                Welcome to your very own cosmic garden! Cultivate exotic alien flora, 
+                manipulate cosmic environments, and discover rare plant species as you 
+                create a thriving interstellar ecosystem.
+            </p>
+            <div class="intro-features">
+                <div class="intro-feature">
+                    <div class="intro-feature-icon">🌿</div>
+                    <div class="intro-feature-title">Celestial Cultivation</div>
+                    <div class="intro-feature-text">
+                        Plant and nurture exotic alien flora with unique growth patterns and evolutionary paths.
+                    </div>
+                </div>
+                <div class="intro-feature">
+                    <div class="intro-feature-icon">⚡</div>
+                    <div class="intro-feature-title">Resource Management</div>
+                    <div class="intro-feature-text">
+                        Harvest cosmic energy, minerals, and seeds to expand your garden and research new species.
+                    </div>
+                </div>
+                <div class="intro-feature">
+                    <div class="intro-feature-icon">🔬</div>
+                    <div class="intro-feature-title">Research & Discovery</div>
+                    <div class="intro-feature-text">
+                        Unlock new technologies and plant varieties through your scientific research.
+                    </div>
+                </div>
+                <div class="intro-feature">
+                    <div class="intro-feature-icon">🌍</div>
+                    <div class="intro-feature-title">Environmental Control</div>
+                    <div class="intro-feature-text">
+                        Manipulate cosmic radiation, gravity, and atmosphere to create perfect growing conditions.
+                    </div>
+                </div>
+            </div>
+            <button class="start-button" id="start-game-btn">Begin Cultivation</button>
+        </div>
+    </div>
+
+    <!-- Main game container -->
+    <div class="container">
+        <header>
+            <div class="game-title">
+                <div class="logo">🌱</div>
+                <h1>Celestial Garden</h1>
+            </div>
+            <div class="player-info">
+                <div class="player-name" id="player-name">Cosmic Gardener</div>
+                <div class="player-level" id="player-level">Level 1</div>
+            </div>
+        </header>
+
+        <nav>
+            <div class="nav-section">
+                <div class="nav-title">Garden</div>
+                <button class="nav-button active" data-view="garden">
+                    <div class="nav-icon">🌱</div>
+                    <span>My Garden</span>
+                </button>
+                <button class="nav-button" data-view="collection">
+                    <div class="nav-icon">🌿</div>
+                    <span>Plant Collection</span>
+                </button>
+            </div>
+            <div class="nav-section">
+                <div class="nav-title">Research</div>
+                <button class="nav-button" data-view="research">
+                    <div class="nav-icon">🔬</div>
+                    <span>Research Lab</span>
+                </button>
+                <button class="nav-button" data-view="achievements">
+                    <div class="nav-icon">🏆</div>
+                    <span>Achievements</span>
+                </button>
+            </div>
+            <div class="nav-section">
+                <div class="nav-title">Settings</div>
+                <button class="nav-button" data-view="settings">
+                    <div class="nav-icon">⚙️</div>
+                    <span>Game Settings</span>
+                </button>
+            </div>
+        </nav>
+
+        <main>
+            <!-- Garden View -->
+            <div class="view active" id="garden-view">
+                <div class="environment-controls">
+                    <div class="env-control">
+                        <div class="env-control-label">
+                            <span>Radiation</span>
+                            <span class="env-control-value" id="radiation-value">50%</span>
+                        </div>
+                        <input type="range" min="0" max="100" value="50" class="env-slider" id="radiation-slider">
+                    </div>
+                    <div class="env-control">
+                        <div class="env-control-label">
+                            <span>Gravity</span>
+                            <span class="env-control-value" id="gravity-value">50%</span>
+                        </div>
+                        <input type="range" min="0" max="100" value="50" class="env-slider" id="gravity-slider">
+                    </div>
+                    <div class="env-control">
+                        <div class="env-control-label">
+                            <span>Atmosphere</span>
+                            <span class="env-control-value" id="atmosphere-value">50%</span>
+                        </div>
+                        <input type="range" min="0" max="100" value="50" class="env-slider" id="atmosphere-slider">
+                    </div>
+                </div>
+                <div class="garden-grid" id="garden-grid">
+                    <!-- Garden plots will be generated here -->
+                </div>
+            </div>
+
+            <!-- Plant Collection View -->
+            <div class="view" id="collection-view">
+                <div class="collection-header">
+                    <div class="collection-title">Plant Collection</div>
+                    <div class="search-filter">
+                        <input type="text" placeholder="Search plants..." class="search-input" id="plant-search">
+                        <select class="filter-dropdown" id="plant-filter">
+                            <option value="all">All Plants</option>
+                            <option value="discovered">Discovered</option>
+                            <option value="rare">Rare</option>
+                            <option value="energy">High Energy</option>
+                            <option value="minerals">High Minerals</option>
+                            <option value="seeds">High Seeds</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="plant-collection" id="plant-collection">
+                    <!-- Plant collection cards will be generated here -->
+                </div>
+            </div>
+
+            <!-- Research View -->
+            <div class="view" id="research-view">
+                <div class="research-grid" id="research-grid">
+                    <!-- Research cards will be generated here -->
+                </div>
+            </div>
+
+            <!-- Achievements View -->
+            <div class="view" id="achievements-view">
+                <h2>Achievements</h2>
+                <div class="achievements-grid" id="achievements-grid">
+                    <!-- Achievement cards will be generated here -->
+                </div>
+            </div>
+
+            <!-- Settings View -->
+            <div class="view" id="settings-view">
+                <div class="settings-section">
+                    <div class="settings-title">
+                        <span>Game Settings</span>
+                        <button class="settings-reset" id="reset-settings">Reset</button>
+                    </div>
+                    <div class="settings-item">
+                        <label class="settings-label" for="player-name-input">Gardener Name</label>
+                        <input type="text" id="player-name-input" class="settings-input" placeholder="Enter your name">
+                    </div>
+                    <div class="settings-item">
+                        <label class="settings-label">
+                            <input type="checkbox" class="settings-checkbox" id="sound-enabled">
+                            Enable Sound Effects
+                        </label>
+                    </div>
+                    <div class="settings-item">
+                        <label class="settings-label">
+                            <input type="checkbox" class="settings-checkbox" id="notifications-enabled">
+                            Enable Notifications
+                        </label>
+                    </div>
+                    <div class="settings-actions">
+                        <button class="settings-button save" id="save-settings">Save Settings</button>
+                    </div>
+                </div>
+                <div class="settings-section">
+                    <div class="settings-title">
+                        <span>Game Data</span>
+                        <button class="settings-reset" id="reset-game">Reset Game</button>
+                    </div>
+                    <div class="settings-actions">
+                        <!-- <button class="settings-button export" id="export-game">Export Save</button>
+                        <button class="settings-button import" id="import-game">Import Save</button> -->
+                    </div>
+                </div>
+            </div>
+        </main>
+
+        <div class="resources-panel">
+            <div class="resource-section">
+                <div class="resource-title">Resources</div>
+                <div class="resource-item">
+                    <div class="resource-name">
+                        <div class="resource-icon energy">⚡</div>
+                        <span>Energy</span>
+                    </div>
+                    <div>
+                        <div class="resource-value" id="energy-value">0</div>
+                        <div class="resource-rate" id="energy-rate">+0.0/s</div>
+                    </div>
+                </div>
+                <div class="resource-item">
+                    <div class="resource-name">
+                        <div class="resource-icon minerals">🔷</div>
+                        <span>Minerals</span>
+                    </div>
+                    <div>
+                        <div class="resource-value" id="minerals-value">0</div>
+                        <div class="resource-rate" id="minerals-rate">+0.0/s</div>
+                    </div>
+                </div>
+                <div class="resource-item">
+                    <div class="resource-name">
+                        <div class="resource-icon seeds">🌱</div>
+                        <span>Seeds</span>
+                    </div>
+                    <div>
+                        <div class="resource-value" id="seeds-value">0</div>
+                        <div class="resource-rate" id="seeds-rate">+0.0/s</div>
+                    </div>
+                </div>
+                <div class="resource-item">
+                    <div class="resource-name">
+                        <div class="resource-icon research">🔬</div>
+                        <span>Research</span>
+                    </div>
+                    <div>
+                        <div class="resource-value" id="research-value">0</div>
+                        <div class="resource-rate" id="research-rate">+0.0/s</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <footer>
+            <div>&copy; 2025 : Ola Alzreikat All rights reserved</div>
+        </footer>
+    </div>
+
+    <!-- Plant Detail Modal -->
+    <div class="modal-overlay" id="plant-detail-modal">
+        <div class="modal">
+            <div class="modal-header">
+                <div class="modal-title" id="plant-detail-title">Plant Detail</div>
+                <button class="modal-close" id="plant-detail-close">&times;</button>
+            </div>
+            <div class="modal-content" id="plant-detail-content">
+                <!-- Plant detail content will be generated here -->
+            </div>
+            <div class="modal-actions">
+                <button class="modal-button secondary" id="plant-detail-close-btn">Close</button>
+                <button class="modal-button primary" id="plant-detail-harvest-btn">Harvest</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Plant Selection Modal -->
+    <div class="modal-overlay" id="plant-selection-modal">
+        <div class="modal">
+            <div class="modal-header">
+                <div class="modal-title">Select Plant to Grow</div>
+                <button class="modal-close" id="plant-selection-close">&times;</button>
+            </div>
+            <div class="modal-content">
+                <div class="plant-selection-grid" id="plant-selection-grid">
+                    <!-- Plant selection items will be generated here -->
+                </div>
+            </div>
+            <div class="modal-actions">
+                <button class="modal-button secondary" id="plant-selection-cancel">Cancel</button>
+                <button class="modal-button primary" id="plant-selection-confirm">Plant</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Toast container -->
+    <div class="toast-container" id="toast-container">
+        <!-- Toast messages will be generated here -->
+    </div>
+
+    <script>
+        // Game Data Structure
+        const gameData = {
+            // Player information
+            player: {
+                name: "Cosmic Gardener",
+                level: 1,
+                experience: 0,
+                experienceToNextLevel: 100
+            },
+            
+            // Game settings
+            settings: {
+                soundEnabled: true,
+                notificationsEnabled: true
+            },
+            
+            // Game resources
+            resources: {
+                energy: 50,
+                minerals: 30,
+                seeds: 10,
+                research: 0
+            },
+            
+            // Resource production rates
+            resourceRates: {
+                energy: 0,
+                minerals: 0,
+                seeds: 0,
+                research: 0
+            },
+            
+            // Garden environment settings
+            environment: {
+                radiation: 50,
+                gravity: 50,
+                atmosphere: 50
+            },
+            
+            // Garden plots
+            garden: [
+                { id: 0, plantId: null, growthProgress: 0, plantedTime: null, harvested: 0 },
+                { id: 1, plantId: null, growthProgress: 0, plantedTime: null, harvested: 0 },
+                { id: 2, plantId: null, growthProgress: 0, plantedTime: null, harvested: 0 },
+                { id: 3, plantId: null, growthProgress: 0, plantedTime: null, harvested: 0 },
+                { id: 4, plantId: null, growthProgress: 0, plantedTime: null, harvested: 0 },
+                { id: 5, plantId: null, growthProgress: 0, plantedTime: null, harvested: 0 },
+                { id: 6, plantId: null, growthProgress: 0, plantedTime: null, harvested: 0 },
+                { id: 7, plantId: null, growthProgress: 0, plantedTime: null, harvested: 0 }
+            ],
+            
+            // Discovered plants
+            discoveredPlants: [],
+            
+            // Completed research
+            completedResearch: [],
+            
+            // Current selected plant for planting
+            selectedPlant: null,
+            
+            // Current selected garden plot
+            selectedPlot: null,
+            
+            // Last game save time
+            lastSaveTime: Date.now(),
+            
+            // Last time resources were updated
+            lastUpdateTime: Date.now(),
+            
+            // Game version
+            version: "1.0.0"
+        };
+        
+        // Plant Database
+        const plantDatabase = [
+            {
+                id: "cosmo_bloom",
+                name: "Cosmo Bloom",
+                description: "A hardy cosmic flower that thrives in various conditions. Perfect for beginning gardeners.",
+                rarity: "common",
+                growthTime: 60, // seconds for testing, would be higher in production
+                stages: ["seed", "sprout", "growth", "bloom"],
+                optimalConditions: {
+                    radiation: 50,
+                    gravity: 50,
+                    atmosphere: 50
+                },
+                tolerance: 30, // how much deviation from optimal the plant can handle
+                yield: {
+                    energy: 10,
+                    minerals: 5,
+                    seeds: 2,
+                    research: 1
+                },
+                yieldMultiplier: 1.0, // base multiplier for resource yield
+                unlockLevel: 1,
+                seedCost: 5,
+                colors: ["#8A2BE2", "#9370DB"],
+                svg: `
+                    <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+                        <circle cx="50" cy="50" r="20" fill="#8A2BE2" />
+                        <circle cx="50" cy="50" r="10" fill="#9370DB" />
+                    </svg>
+                `
+            },
+            {
+                id: "stellar_fern",
+                name: "Stellar Fern",
+                description: "A delicate fern-like plant that absorbs cosmic radiation efficiently.",
+                rarity: "common",
+                growthTime: 90,
+                stages: ["seed", "sprout", "growth", "mature"],
+                optimalConditions: {
+                    radiation: 70,
+                    gravity: 30,
+                    atmosphere: 60
+                },
+                tolerance: 25,
+                yield: {
+                    energy: 15,
+                    minerals: 3,
+                    seeds: 2,
+                    research: 2
+                },
+                yieldMultiplier: 1.0,
+                unlockLevel: 1,
+                seedCost: 8,
+                colors: ["#3CB371", "#98FB98"],
+                svg: `
+                    <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M50,20 Q60,40 50,60 Q40,40 50,20" fill="#3CB371" />
+                        <path d="M40,30 Q50,50 40,70 Q30,50 40,30" fill="#3CB371" />
+                        <path d="M60,30 Q70,50 60,70 Q50,50 60,30" fill="#3CB371" />
+                    </svg>
+                `
+            },
+            {
+                id: "lunar_crystalite",
+                name: "Lunar Crystalite",
+                description: "A crystalline plant that thrives in low gravity. Rich in minerals.",
+                rarity: "uncommon",
+                growthTime: 120,
+                stages: ["seed", "cluster", "formation", "crystal"],
+                optimalConditions: {
+                    radiation: 40,
+                    gravity: 20,
+                    atmosphere: 30
+                },
+                tolerance: 20,
+                yield: {
+                    energy: 5,
+                    minerals: 20,
+                    seeds: 1,
+                    research: 3
+                },
+                yieldMultiplier: 1.0,
+                unlockLevel: 2,
+                seedCost: 12,
+                colors: ["#4682B4", "#ADD8E6"],
+                svg: `
+                    <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+                        <polygon points="50,20 60,40 50,60 40,40" fill="#4682B4" />
+                        <polygon points="30,35 40,55 30,75 20,55" fill="#ADD8E6" />
+                        <polygon points="70,35 80,55 70,75 60,55" fill="#ADD8E6" />
+                    </svg>
+                `
+            },
+            {
+                id: "nebula_pod",
+                name: "Nebula Pod",
+                description: "A mysterious pod that produces an abundance of seeds. Requires special atmospheric conditions.",
+                rarity: "uncommon",
+                growthTime: 150,
+                stages: ["seed", "bulb", "swelling", "pod"],
+                optimalConditions: {
+                    radiation: 30,
+                    gravity: 60,
+                    atmosphere: 80
+                },
+                tolerance: 15,
+                yield: {
+                    energy: 3,
+                    minerals: 5,
+                    seeds: 15,
+                    research: 2
+                },
+                yieldMultiplier: 1.0,
+                unlockLevel: 3,
+                seedCost: 15,
+                colors: ["#FF6347", "#FFA07A"],
+                svg: `
+                    <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+                        <ellipse cx="50" cy="50" rx="25" ry="20" fill="#FF6347" />
+                        <circle cx="40" cy="45" r="5" fill="#FFA07A" />
+                        <circle cx="50" cy="55" r="5" fill="#FFA07A" />
+                        <circle cx="60" cy="45" r="5" fill="#FFA07A" />
+                    </svg>
+                `
+            },
+            {
+                id: "void_orchid",
+                name: "Void Orchid",
+                description: "A rare orchid that thrives in extreme conditions. Produces significant research data.",
+                rarity: "rare",
+                growthTime: 180,
+                stages: ["seed", "seedling", "bud", "bloom"],
+                optimalConditions: {
+                    radiation: 85,
+                    gravity: 15,
+                    atmosphere: 40
+                },
+                tolerance: 10,
+                yield: {
+                    energy: 8,
+                    minerals: 8,
+                    seeds: 3,
+                    research: 15
+                },
+                yieldMultiplier: 1.0,
+                unlockLevel: 5,
+                seedCost: 25,
+                colors: ["#800080", "#DDA0DD"],
+                svg: `
+                    <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M50,20 C70,30 70,50 50,60 C30,50 30,30 50,20" fill="#800080" />
+                        <path d="M40,40 C50,50 60,50 70,40 C60,60 40,60 30,40 C40,30 50,30 40,40" fill="#DDA0DD" />
+                    </svg>
+                `
+            },
+            {
+                id: "plasma_willow",
+                name: "Plasma Willow",
+                description: "A highly energetic plant that harnesses cosmic radiation to produce abundant energy.",
+                rarity: "rare",
+                growthTime: 200,
+                stages: ["seed", "sapling", "juvenile", "mature"],
+                optimalConditions: {
+                    radiation: 90,
+                    gravity: 60,
+                    atmosphere: 30
+                },
+                tolerance: 15,
+                yield: {
+                    energy: 25,
+                    minerals: 5,
+                    seeds: 2,
+                    research: 5
+                },
+                yieldMultiplier: 1.0,
+                unlockLevel: 7,
+                seedCost: 30,
+                colors: ["#00BFFF", "#87CEFA"],
+                svg: `
+                    <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+                        <line x1="50" y1="20" x2="50" y2="70" stroke="#8B4513" stroke-width="3" />
+                        <path d="M50,20 C70,30 80,20 90,25" stroke="#00BFFF" stroke-width="2" fill="none" />
+                        <path d="M50,30 C70,40 80,30 90,35" stroke="#00BFFF" stroke-width="2" fill="none" />
+                        <path d="M50,40 C70,50 80,40 90,45" stroke="#00BFFF" stroke-width="2" fill="none" />
+                        <path d="M50,20 C30,30 20,20 10,25" stroke="#87CEFA" stroke-width="2" fill="none" />
+                        <path d="M50,30 C30,40 20,30 10,35" stroke="#87CEFA" stroke-width="2" fill="none" />
+                        <path d="M50,40 C30,50 20,40 10,45" stroke="#87CEFA" stroke-width="2" fill="none" />
+                    </svg>
+                `
+            }
+        ];
+        
+        // Research Database
+        const researchDatabase = [
+            {
+                id: "basic_cultivation",
+                name: "Basic Cultivation Techniques",
+                description: "Fundamental understanding of cosmic plant care.",
+                cost: 10,
+                benefits: ["Unlocks Stellar Fern", "10% faster growth for all plants"],
+                unlocked: true,
+                completed: false,
+                requiresResearch: []
+            },
+            {
+                id: "mineral_extraction",
+                name: "Mineral Extraction",
+                description: "Methods to improve mineral yield from cosmic plants.",
+                cost: 25,
+                benefits: ["Unlocks Lunar Crystalite", "20% increased mineral yield"],
+                unlocked: false,
+                completed: false,
+                requiresResearch: ["basic_cultivation"]
+            },
+            {
+                id: "atmospheric_control",
+                name: "Atmospheric Control",
+                description: "Advanced techniques for manipulating garden atmosphere.",
+                cost: 40,
+                benefits: ["Unlocks Nebula Pod", "Atmosphere adjustments 20% more effective"],
+                unlocked: false,
+                completed: false,
+                requiresResearch: ["basic_cultivation"]
+            },
+            {
+                id: "radiation_harnessing",
+                name: "Radiation Harnessing",
+                description: "Methods to safely increase and utilize cosmic radiation.",
+                cost: 60,
+                benefits: ["Unlocks Void Orchid", "30% increased energy yield"],
+                unlocked: false,
+                completed: false,
+                requiresResearch: ["basic_cultivation", "atmospheric_control"]
+            },
+            {
+                id: "gravitic_manipulation",
+                name: "Gravitic Manipulation",
+                description: "Advanced techniques for controlling garden gravity.",
+                cost: 75,
+                benefits: ["Unlocks Plasma Willow", "Gravity adjustments 30% more effective"],
+                unlocked: false,
+                completed: false,
+                requiresResearch: ["mineral_extraction", "radiation_harnessing"]
+            }
+        ];
+        
+        // Achievement Database
+        const achievementDatabase = [
+            {
+                id: "first_plant",
+                name: "Cosmic Gardener",
+                description: "Plant your first cosmic flora.",
+                unlocked: false
+            },
+            {
+                id: "first_harvest",
+                name: "First Harvest",
+                description: "Successfully harvest your first plant.",
+                unlocked: false
+            },
+            {
+                id: "plant_collector",
+                name: "Plant Collector",
+                description: "Discover 3 different plant species.",
+                unlocked: false
+            },
+            {
+                id: "researcher",
+                name: "Cosmic Researcher",
+                description: "Complete your first research project.",
+                unlocked: false
+            },
+            {
+                id: "garden_master",
+                name: "Garden Master",
+                description: "Have all garden plots filled with plants at once.",
+                unlocked: false
+            }
+        ];
+        
+        // DOM Elements
+        const loadingOverlay = document.getElementById('loading-overlay');
+        const loadingProgressBar = document.getElementById('loading-progress-bar');
+        const introModalOverlay = document.getElementById('intro-modal-overlay');
+        const startGameBtn = document.getElementById('start-game-btn');
+        const navButtons = document.querySelectorAll('.nav-button');
+        const views = document.querySelectorAll('.view');
+        const playerNameDisplay = document.getElementById('player-name');
+        const playerLevelDisplay = document.getElementById('player-level');
+        const gardenGrid = document.getElementById('garden-grid');
+        const plantCollection = document.getElementById('plant-collection');
+        const researchGrid = document.getElementById('research-grid');
+        const plantSearch = document.getElementById('plant-search');
+        const plantFilter = document.getElementById('plant-filter');
+        const environmentSliders = {
+            radiation: document.getElementById('radiation-slider'),
+            gravity: document.getElementById('gravity-slider'),
+            atmosphere: document.getElementById('atmosphere-slider')
+        };
+        const environmentValues = {
+            radiation: document.getElementById('radiation-value'),
+            gravity: document.getElementById('gravity-value'),
+            atmosphere: document.getElementById('atmosphere-value')
+        };
+        const resourceValues = {
+            energy: document.getElementById('energy-value'),
+            minerals: document.getElementById('minerals-value'),
+            seeds: document.getElementById('seeds-value'),
+            research: document.getElementById('research-value')
+        };
+        const resourceRates = {
+            energy: document.getElementById('energy-rate'),
+            minerals: document.getElementById('minerals-rate'),
+            seeds: document.getElementById('seeds-rate'),
+            research: document.getElementById('research-rate')
+        };
+        const plantDetailModal = document.getElementById('plant-detail-modal');
+        const plantDetailTitle = document.getElementById('plant-detail-title');
+        const plantDetailContent = document.getElementById('plant-detail-content');
+        const plantDetailCloseBtn = document.getElementById('plant-detail-close');
+        const plantDetailCloseBtn2 = document.getElementById('plant-detail-close-btn');
+        const plantDetailHarvestBtn = document.getElementById('plant-detail-harvest-btn');
+        const plantSelectionModal = document.getElementById('plant-selection-modal');
+        const plantSelectionGrid = document.getElementById('plant-selection-grid');
+        const plantSelectionClose = document.getElementById('plant-selection-close');
+        const plantSelectionCancel = document.getElementById('plant-selection-cancel');
+        const plantSelectionConfirm = document.getElementById('plant-selection-confirm');
+        const toastContainer = document.getElementById('toast-container');
+        const playerNameInput = document.getElementById('player-name-input');
+        const soundEnabledCheckbox = document.getElementById('sound-enabled');
+        const notificationsEnabledCheckbox = document.getElementById('notifications-enabled');
+        const saveSettingsBtn = document.getElementById('save-settings');
+        const resetSettingsBtn = document.getElementById('reset-settings');
+        const resetGameBtn = document.getElementById('reset-game');
+        const exportGameBtn = document.getElementById('export-game');
+        const importGameBtn = document.getElementById('import-game');
+        
+        // Game state
+        let gameInterval;
+        let isGamePaused = false;
+        
+        // Initialize the game
+        function initGame() {
+            // Simulate loading progress
+            let progress = 0;
+            const loadingInterval = setInterval(() => {
+                progress += 5;
+                loadingProgressBar.style.width = `${progress}%`;
+                
+                if (progress >= 100) {
+                    clearInterval(loadingInterval);
+                    setTimeout(() => {
+                        loadingOverlay.style.opacity = 0;
+                        setTimeout(() => {
+                            loadingOverlay.style.display = 'none';
+                            introModalOverlay.classList.add('active');
+                        }, 500);
+                    }, 500);
+                }
+            }, 100);
+            
+            // Load game data from local storage
+            loadGameData();
+            
+            // Initialize event listeners
+            initEventListeners();
+            
+            // Render initial game state
+            renderGame();
+        }
+        
+        // Save game data to local storage
+        function saveGameData() {
+            gameData.lastSaveTime = Date.now();
+            
+            try {
+                localStorage.setItem('celestialGardenSave', JSON.stringify(gameData));
+                showToast('Game saved successfully', 'success');
+            } catch (error) {
+                showToast('Failed to save game', 'error');
+                console.error('Save error:', error);
+            }
+            
+            // Set a cookie with last save time
+            setCookie('lastSaveTime', gameData.lastSaveTime, 30);
+        }
+        
+        // Load game data from local storage
+        function loadGameData() {
+            try {
+                const savedGame = localStorage.getItem('celestialGardenSave');
+                
+                if (savedGame) {
+                    const parsedData = JSON.parse(savedGame);
+                    
+                    // Check for game version and apply data migrations if necessary
+                    if (parsedData.version !== gameData.version) {
+                        // Apply data migrations here if needed
+                        console.log('Game version mismatch, applying migrations...');
+                    }
+                    
+                    // Merge saved data with default game data
+                    Object.assign(gameData, parsedData);
+                    
+                    // Calculate offline progress
+                    const currentTime = Date.now();
+                    const offlineTime = currentTime - gameData.lastUpdateTime;
+                    
+                    if (offlineTime > 5000) { // 5 seconds minimum for offline progress
+                        calculateOfflineProgress(offlineTime);
+                    }
+                    
+                    gameData.lastUpdateTime = currentTime;
+                    
+                    showToast('Game loaded successfully', 'success');
+                } else {
+                    // First time playing
+                    startNewGame();
+                }
+            } catch (error) {
+                showToast('Failed to load game', 'error');
+                console.error('Load error:', error);
+                startNewGame();
+            }
+        }
+        
+        // Start a new game
+        function startNewGame() {
+            // Add first plant to discovered plants
+            addPlantToDiscovery('cosmo_bloom');
+            
+            // Mark first research as available
+            updateResearchAvailability();
+            
+            // Save initial game state
+            saveGameData();
+        }
+        
+        // Calculate offline progress
+        function calculateOfflineProgress(offlineTime) {
+            const offlineSeconds = offlineTime / 1000;
+            
+            // Calculate resource generation from plants
+            let offlineResources = {
+                energy: 0,
+                minerals: 0,
+                seeds: 0,
+                research: 0
+            };
+            
+            // Process garden growth and resource generation
+            for (let plot of gameData.garden) {
+                if (plot.plantId) {
+                    const plant = getPlantById(plot.plantId);
+                    if (!plant) continue;
+                    
+                    // Calculate growth progress
+                    const totalGrowthNeeded = plant.growthTime;
+                    let newGrowthProgress = plot.growthProgress + (offlineSeconds / totalGrowthNeeded) * 100;
+                    
+                    // If plant was ready for harvest
+                    if (newGrowthProgress >= 100) {
+                        newGrowthProgress = 100;
+                        
+                        // Calculate resources generated (at reduced rate for offline)
+                        const offlineMultiplier = 0.5; // 50% efficiency when offline
+                        const environmentMultiplier = calculateEnvironmentMultiplier(plant);
+                        const totalMultiplier = plant.yieldMultiplier * environmentMultiplier * offlineMultiplier;
+                        
+                        for (const [resource, amount] of Object.entries(plant.yield)) {
+                            offlineResources[resource] += amount * totalMultiplier;
+                        }
+                    }
+                    
+                    // Update plot growth progress
+                    plot.growthProgress = newGrowthProgress;
+                }
+            }
+            
+            // Add offline resources
+            for (const [resource, amount] of Object.entries(offlineResources)) {
+                gameData.resources[resource] += Math.floor(amount);
+            }
+            
+            // Show offline progress toast
+            let offlineMessage = 'While you were away: ';
+            let resourcesGenerated = false;
+            
+            for (const [resource, amount] of Object.entries(offlineResources)) {
+                if (amount > 0) {
+                    offlineMessage += `+${Math.floor(amount)} ${resource}, `;
+                    resourcesGenerated = true;
+                }
+            }
+            
+            if (resourcesGenerated) {
+                offlineMessage = offlineMessage.slice(0, -2); // Remove trailing comma and space
+                showToast(offlineMessage, 'success');
+            }
+        }
+        
+        // Set a cookie
+        function setCookie(name, value, days) {
+            const date = new Date();
+            date.setTime(date.getTime() + (days * 24 * 60 * 60 * 1000));
+            const expires = `expires=${date.toUTCString()}`;
+            document.cookie = `${name}=${value};${expires};path=/`;
+        }
+        
+        // Get a cookie
+        function getCookie(name) {
+            const cookieName = `${name}=`;
+            const cookies = document.cookie.split(';');
+            
+            for (let i = 0; i < cookies.length; i++) {
+                let cookie = cookies[i].trim();
+                if (cookie.indexOf(cookieName) === 0) {
+                    return cookie.substring(cookieName.length, cookie.length);
+                }
+            }
+            
+            return null;
+        }
+        
+        // Delete a cookie
+        function deleteCookie(name) {
+            document.cookie = `${name}=;expires=Thu, 01 Jan 1970 00:00:00 UTC;path=/;`;
+        }
+        
+        // Initialize event listeners
+        function initEventListeners() {
+            // Start game button
+            startGameBtn.addEventListener('click', () => {
+                introModalOverlay.classList.remove('active');
+                startGameLoop();
+            });
+            
+            // Navigation buttons
+            navButtons.forEach(button => {
+                button.addEventListener('click', () => {
+                    const viewId = button.dataset.view;
+                    
+                    // Update active button
+                    navButtons.forEach(btn => btn.classList.remove('active'));
+                    button.classList.add('active');
+                    
+                    // Show selected view
+                    views.forEach(view => view.classList.remove('active'));
+                    document.getElementById(`${viewId}-view`).classList.add('active');
+                });
+            });
+            
+            // Environment sliders
+            for (const [env, slider] of Object.entries(environmentSliders)) {
+                slider.addEventListener('input', () => {
+                    const value = slider.value;
+                    gameData.environment[env] = parseInt(value);
+                    environmentValues[env].textContent = `${value}%`;
+                    
+                    // Update plant growth rates based on new environment
+                    updateResourceRates();
+                    
+                    // Save environment changes
+                    saveGameData();
+                });
+            }
+            
+            // Plant search and filter
+            plantSearch.addEventListener('input', renderPlantCollection);
+            plantFilter.addEventListener('change', renderPlantCollection);
+            
+            // Plant detail modal close buttons
+            plantDetailCloseBtn.addEventListener('click', () => {
+                plantDetailModal.classList.remove('active');
+            });
+            
+            plantDetailCloseBtn2.addEventListener('click', () => {
+                plantDetailModal.classList.remove('active');
+            });
+            
+            // Plant detail harvest button
+            plantDetailHarvestBtn.addEventListener('click', () => {
+                harvestPlant(gameData.selectedPlot);
+                plantDetailModal.classList.remove('active');
+            });
+            
+            // Plant selection modal close buttons
+            plantSelectionClose.addEventListener('click', () => {
+                plantSelectionModal.classList.remove('active');
+                gameData.selectedPlot = null;
+            });
+            
+            plantSelectionCancel.addEventListener('click', () => {
+                plantSelectionModal.classList.remove('active');
+                gameData.selectedPlot = null;
+            });
+            
+            // Plant selection confirm button
+            plantSelectionConfirm.addEventListener('click', () => {
+                if (gameData.selectedPlant && gameData.selectedPlot !== null) {
+                    plantSeed(gameData.selectedPlot, gameData.selectedPlant);
+                    plantSelectionModal.classList.remove('active');
+                } else {
+                    showToast('Please select a plant first', 'warning');
+                }
+            });
+            
+            // Settings form
+            playerNameInput.value = gameData.player.name;
+            soundEnabledCheckbox.checked = gameData.settings.soundEnabled;
+            notificationsEnabledCheckbox.checked = gameData.settings.notificationsEnabled;
+            
+            saveSettingsBtn.addEventListener('click', () => {
+                // Update settings
+                gameData.player.name = playerNameInput.value.trim() || "Cosmic Gardener";
+                gameData.settings.soundEnabled = soundEnabledCheckbox.checked;
+                gameData.settings.notificationsEnabled = notificationsEnabledCheckbox.checked;
+                
+                // Update UI
+                playerNameDisplay.textContent = gameData.player.name;
+                
+                // Save settings
+                saveGameData();
+                showToast('Settings saved successfully', 'success');
+            });
+            
+            resetSettingsBtn.addEventListener('click', () => {
+                if (confirm('Are you sure you want to reset settings to default?')) {
+                    gameData.player.name = "Cosmic Gardener";
+                    gameData.settings.soundEnabled = true;
+                    gameData.settings.notificationsEnabled = true;
+                    
+                    // Update form
+                    playerNameInput.value = gameData.player.name;
+                    soundEnabledCheckbox.checked = gameData.settings.soundEnabled;
+                    notificationsEnabledCheckbox.checked = gameData.settings.notificationsEnabled;
+                    
+                    // Update UI
+                    playerNameDisplay.textContent = gameData.player.name;
+                    
+                    // Save settings
+                    saveGameData();
+                    showToast('Settings reset to default', 'success');
+                }
+            });
+            
+            // Game data controls
+            resetGameBtn.addEventListener('click', () => {
+                if (confirm('Are you sure you want to reset the game? All progress will be lost!')) {
+                    localStorage.removeItem('celestialGardenSave');
+                    deleteCookie('lastSaveTime');
+                    showToast('Game has been reset', 'success');
+                    
+                    // Reload the page to start fresh
+                    setTimeout(() => {
+                        window.location.reload();
+                    }, 1000);
+                }
+            });
+            
+            exportGameBtn.addEventListener('click', exportGameSave);
+            importGameBtn.addEventListener('click', importGameSave);
+        }
+        
+        // Start the game loop
+        function startGameLoop() {
+            // Update initial UI
+            updateResourceDisplay();
+            updateEnvironmentSliders();
+            renderGarden();
+            renderPlantCollection();
+            renderResearch();
+            
+            // Start the game interval
+            gameInterval = setInterval(() => {
+                if (!isGamePaused) {
+                    updateGame();
+                }
+            }, 1000); // Update every second
+            
+            // Set up autosave every minute
+            setInterval(() => {
+                if (!isGamePaused) {
+                    saveGameData();
+                }
+            }, 60000);
+        }
+        
+        // Main game update function
+        function updateGame() {
+            const currentTime = Date.now();
+            const deltaTime = (currentTime - gameData.lastUpdateTime) / 1000; // Convert to seconds
+            gameData.lastUpdateTime = currentTime;
+            
+            // Update garden growth
+            updateGardenGrowth(deltaTime);
+            
+            // Update resources
+            updateResources(deltaTime);
+            
+            // Update display
+            updateResourceDisplay();
+            renderGarden();
+            
+            // Check for achievements
+            checkAchievements();
+        }
+        
+        // Update garden growth
+        function updateGardenGrowth(deltaTime) {
+            for (let i = 0; i < gameData.garden.length; i++) {
+                const plot = gameData.garden[i];
+                
+                if (plot.plantId) {
+                    const plant = getPlantById(plot.plantId);
+                    if (!plant) continue;
+                    
+                    // Calculate growth rate based on environment
+                    const environmentMultiplier = calculateEnvironmentMultiplier(plant);
+                    const growthRate = (deltaTime / plant.growthTime) * 100 * environmentMultiplier;
+                    
+                    // Update growth progress
+                    plot.growthProgress = Math.min(100, plot.growthProgress + growthRate);
+                    
+                    // Update resource production rates if plant is mature
+                    if (plot.growthProgress >= 100) {
+                        // Plants that have reached maturity continue to produce at reduced rate
+                        for (const [resource, amount] of Object.entries(plant.yield)) {
+                            const productionRate = (amount * environmentMultiplier * plant.yieldMultiplier) / 60; // Per second
+                            gameData.resourceRates[resource] += productionRate;
+                        }
+                    }
+                }
+            }
+        }
+        
+        // Update resources
+        function updateResources(deltaTime) {
+            // Add resources based on production rates
+            for (const [resource, rate] of Object.entries(gameData.resourceRates)) {
+                gameData.resources[resource] += rate * deltaTime;
+            }
+            
+            // Reset production rates (will be recalculated in growth update)
+            for (const resource in gameData.resourceRates) {
+                gameData.resourceRates[resource] = 0;
+            }
+        }
+        
+        // Update resource rates
+        function updateResourceRates() {
+            // Reset production rates
+            for (const resource in gameData.resourceRates) {
+                gameData.resourceRates[resource] = 0;
+            }
+            
+            // Calculate production from mature plants
+            for (let i = 0; i < gameData.garden.length; i++) {
+                const plot = gameData.garden[i];
+                
+                if (plot.plantId && plot.growthProgress >= 100) {
+                    const plant = getPlantById(plot.plantId);
+                    if (!plant) continue;
+                    
+                    // Calculate production multiplier based on environment
+                    const environmentMultiplier = calculateEnvironmentMultiplier(plant);
+                    
+                    // Update resource rates
+                    for (const [resource, amount] of Object.entries(plant.yield)) {
+                        const productionRate = (amount * environmentMultiplier * plant.yieldMultiplier) / 60; // Per second
+                        gameData.resourceRates[resource] += productionRate;
+                    }
+                }
+            }
+        }
+        
+        // Calculate environment multiplier for a plant
+        function calculateEnvironmentMultiplier(plant) {
+            // Calculate how close the environment is to optimal for the plant
+            let radiationDiff = Math.abs(gameData.environment.radiation - plant.optimalConditions.radiation);
+            let gravityDiff = Math.abs(gameData.environment.gravity - plant.optimalConditions.gravity);
+            let atmosphereDiff = Math.abs(gameData.environment.atmosphere - plant.optimalConditions.atmosphere);
+            
+            // Convert differences to percentages (0-100)
+            radiationDiff = (radiationDiff / 100) * 100;
+            gravityDiff = (gravityDiff / 100) * 100;
+            atmosphereDiff = (atmosphereDiff / 100) * 100;
+            
+            // Average difference as percentage
+            const avgDiff = (radiationDiff + gravityDiff + atmosphereDiff) / 3;
+            
+            // Calculate multiplier (1.0 if perfect, down to 0.2 if completely wrong)
+            let multiplier;
+            if (avgDiff <= plant.tolerance) {
+                // Within tolerance - full efficiency to slight reduction
+                multiplier = 1.0 - (avgDiff / plant.tolerance) * 0.2;
+            } else {
+                // Outside tolerance - reduced efficiency
+                multiplier = 0.8 * (1 - Math.min(1, (avgDiff - plant.tolerance) / (100 - plant.tolerance)));
+            }
+            
+            return Math.max(0.2, multiplier);
+        }
+        
+        // Plant a seed in a garden plot
+        function plantSeed(plotIndex, plantId) {
+            const plant = getPlantById(plantId);
+            if (!plant) return false;
+            
+            // Check if we have enough seeds
+            if (gameData.resources.seeds < plant.seedCost) {
+                showToast(`Not enough seeds. Need ${plant.seedCost}`, 'error');
+                return false;
+            }
+            
+            // Check if the plot is empty
+            if (gameData.garden[plotIndex].plantId !== null) {
+                showToast('This plot already has a plant', 'error');
+                return false;
+            }
+            
+            // Plant the seed
+            gameData.garden[plotIndex].plantId = plantId;
+            gameData.garden[plotIndex].growthProgress = 0;
+            gameData.garden[plotIndex].plantedTime = Date.now();
+            gameData.garden[plotIndex].harvested = 0;
+            
+            // Deduct seeds
+            gameData.resources.seeds -= plant.seedCost;
+            
+            // Update display
+            updateResourceDisplay();
+            renderGarden();
+            
+            // Add to discovered plants if not already there
+            addPlantToDiscovery(plantId);
+            
+            // Check achievement for first plant
+            checkAchievement('first_plant');
+            
+            // Save game
+            saveGameData();
+            
+            showToast(`Planted ${plant.name}`, 'success');
+            return true;
+        }
+        
+        // Harvest a plant
+        function harvestPlant(plotIndex) {
+            const plot = gameData.garden[plotIndex];
+            
+            if (!plot.plantId || plot.growthProgress < 100) {
+                showToast('Plant is not ready for harvest', 'warning');
+                return false;
+            }
+            
+            const plant = getPlantById(plot.plantId);
+            if (!plant) return false;
+            
+            // Calculate yield based on environment
+            const environmentMultiplier = calculateEnvironmentMultiplier(plant);
+            const totalMultiplier = plant.yieldMultiplier * environmentMultiplier;
+            
+            // Add resources
+            let harvestMessage = `Harvested ${plant.name}:<br>`;
+            
+            for (const [resource, amount] of Object.entries(plant.yield)) {
+                const yieldAmount = Math.floor(amount * totalMultiplier);
+                gameData.resources[resource] += yieldAmount;
+                harvestMessage += `+${yieldAmount} ${resource}<br>`;
+            }
+            
+            // Clear plot
+            plot.plantId = null;
+            plot.growthProgress = 0;
+            plot.plantedTime = null;
+            plot.harvested++;
+            
+            // Update display
+            updateResourceDisplay();
+            renderGarden();
+            
+            // Check achievement for first harvest
+            checkAchievement('first_harvest');
+            
+            // Save game
+            saveGameData();
+            
+            showToast(harvestMessage, 'success');
+            return true;
+        }
+        
+        // Add a plant to the discovered plants list
+        function addPlantToDiscovery(plantId) {
+            if (!gameData.discoveredPlants.includes(plantId)) {
+                gameData.discoveredPlants.push(plantId);
+                showToast(`New plant discovered: ${getPlantById(plantId).name}`, 'success');
+                
+                // Check achievement for plant collection
+                if (gameData.discoveredPlants.length >= 3) {
+                    checkAchievement('plant_collector');
+                }
+                
+                // Render plant collection to show new plant
+                renderPlantCollection();
+            }
+        }
+        
+        // Update research availability based on completed research
+        function updateResearchAvailability() {
+            for (const research of researchDatabase) {
+                if (!research.completed) {
+                    // Check if all required research is completed
+                    const requirementsMet = research.requiresResearch.every(reqId => {
+                        return gameData.completedResearch.includes(reqId);
+                    });
+                    
+                    research.unlocked = requirementsMet;
+                }
+            }
+            
+            // Render research grid to reflect changes
+            renderResearch();
+        }
+        
+        // Complete a research project
+        function completeResearch(researchId) {
+            const research = getResearchById(researchId);
+            if (!research) return false;
+            
+            // Check if already completed
+            if (research.completed) {
+                showToast('Research already completed', 'warning');
+                return false;
+            }
+            
+            // Check if unlocked
+            if (!research.unlocked) {
+                showToast('Research not available yet', 'error');
+                return false;
+            }
+            
+            // Check if enough research points
+            if (gameData.resources.research < research.cost) {
+                showToast(`Not enough research points. Need ${research.cost}`, 'error');
+                return false;
+            }
+            
+            // Complete research
+            gameData.resources.research -= research.cost;
+            gameData.completedResearch.push(researchId);
+            research.completed = true;
+            
+            // Apply research benefits
+            applyResearchBenefits(research);
+            
+            // Update research availability
+            updateResearchAvailability();
+            
+            // Update display
+            updateResourceDisplay();
+            renderResearch();
+            
+            // Check achievement
+            checkAchievement('researcher');
+            
+            // Save game
+            saveGameData();
+            
+            showToast(`Completed research: ${research.name}`, 'success');
+            return true;
+        }
+        
+        // Apply research benefits
+        function applyResearchBenefits(research) {
+            // This would implement the specific benefits from each research
+            // For example, unlocking plants, increasing yields, etc.
+            showToast(`Research benefits applied: ${research.benefits.join(', ')}`, 'success');
+        }
+        
+        // Check achievements
+        function checkAchievements() {
+            // Check garden master achievement
+            let allPlotsFilled = true;
+            for (const plot of gameData.garden) {
+                if (plot.plantId === null) {
+                    allPlotsFilled = false;
+                    break;
+                }
+            }
+            
+            if (allPlotsFilled) {
+                checkAchievement('garden_master');
+            }
+        }
+        
+        // Check and unlock a specific achievement
+        function checkAchievement(achievementId) {
+            const achievement = getAchievementById(achievementId);
+            if (!achievement) return;
+            
+            if (!achievement.unlocked) {
+                achievement.unlocked = true;
+                showToast(`Achievement unlocked: ${achievement.name}`, 'success');
+                renderAchievements();
+            }
+        }
+        
+        // Render the entire game state
+        function renderGame() {
+            playerNameDisplay.textContent = gameData.player.name;
+            playerLevelDisplay.textContent = `Level ${gameData.player.level}`;
+            
+            updateResourceDisplay();
+            updateEnvironmentSliders();
+            renderGarden();
+            renderPlantCollection();
+            renderResearch();
+            renderAchievements();
+        }
+        
+        // Update resource display
+        function updateResourceDisplay() {
+            for (const [resource, value] of Object.entries(gameData.resources)) {
+                resourceValues[resource].textContent = Math.floor(value);
+                resourceRates[resource].textContent = `+${gameData.resourceRates[resource].toFixed(1)}/s`;
+            }
+        }
+        
+        // Update environment sliders
+        // Update environment sliders
+        function updateEnvironmentSliders() {
+            for (const [env, value] of Object.entries(gameData.environment)) {
+                environmentSliders[env].value = value;
+                environmentValues[env].textContent = `${value}%`;
+            }
+        }
+        
+        // Render garden
+        function renderGarden() {
+            gardenGrid.innerHTML = '';
+            
+            for (let i = 0; i < gameData.garden.length; i++) {
+                const plot = gameData.garden[i];
+                const plotElement = document.createElement('div');
+                plotElement.classList.add('plot');
+                plotElement.dataset.id = i;
+                
+                if (plot.plantId === null) {
+                    // Empty plot
+                    plotElement.classList.add('empty');
+                    plotElement.innerHTML = `
+                        <div class="plot-content">
+                            <div>Click to plant</div>
+                        </div>
+                    `;
+                    
+                    plotElement.addEventListener('click', () => {
+                        gameData.selectedPlot = i;
+                        openPlantSelectionModal();
+                    });
+                } else {
+                    // Plot with plant
+                    const plant = getPlantById(plot.plantId);
+                    if (!plant) continue;
+                    
+                    // Calculate current growth stage
+                    const stageIndex = Math.min(
+                        Math.floor(plot.growthProgress / (100 / plant.stages.length)),
+                        plant.stages.length - 1
+                    );
+                    const currentStage = plant.stages[stageIndex];
+                    
+                    // Calculate environment compatibility for visual cue
+                    const environmentMultiplier = calculateEnvironmentMultiplier(plant);
+                    let compatibilityClass = '';
+                    
+                    if (environmentMultiplier >= 0.9) {
+                        compatibilityClass = 'excellent';
+                    } else if (environmentMultiplier >= 0.7) {
+                        compatibilityClass = 'good';
+                    } else if (environmentMultiplier >= 0.4) {
+                        compatibilityClass = 'fair';
+                    } else {
+                        compatibilityClass = 'poor';
+                    }
+                    
+                    plotElement.innerHTML = `
+                        <div class="plot-content">
+                            <div class="plant-image ${compatibilityClass}">
+                                ${plant.svg}
+                            </div>
+                            <div class="plant-info">
+                                <div class="plant-name">${plant.name}</div>
+                                <div class="plant-stage">${currentStage}</div>
+                                <div class="progress-bar">
+                                    <div class="progress-fill" style="width: ${plot.growthProgress}%"></div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="plot-background"></div>
+                    `;
+                    
+                    // Set click handler to show plant detail
+                    plotElement.addEventListener('click', () => {
+                        gameData.selectedPlot = i;
+                        openPlantDetailModal(plot.plantId, i);
+                    });
+                }
+                
+                gardenGrid.appendChild(plotElement);
+            }
+        }
+        
+        // Render plant collection
+        function renderPlantCollection() {
+            plantCollection.innerHTML = '';
+            
+            // Filter plants based on search and filter
+            const searchTerm = plantSearch.value.toLowerCase();
+            const filterType = plantFilter.value;
+            
+            let filteredPlants = plantDatabase.filter(plant => {
+                // Only show discovered plants
+                if (!gameData.discoveredPlants.includes(plant.id)) {
+                    return false;
+                }
+                
+                // Apply search filter
+                if (searchTerm && !plant.name.toLowerCase().includes(searchTerm) && 
+                    !plant.description.toLowerCase().includes(searchTerm)) {
+                    return false;
+                }
+                
+                // Apply category filter
+                if (filterType !== 'all') {
+                    switch (filterType) {
+                        case 'rare':
+                            return plant.rarity === 'rare';
+                        case 'energy':
+                            return plant.yield.energy >= 15;
+                        case 'minerals':
+                            return plant.yield.minerals >= 15;
+                        case 'seeds':
+                            return plant.yield.seeds >= 10;
+                        default:
+                            return true;
+                    }
+                }
+                
+                return true;
+            });
+            
+            if (filteredPlants.length === 0) {
+                plantCollection.innerHTML = '<div class="no-results">No plants found matching your criteria</div>';
+                return;
+            }
+            
+            // Create plant collection cards
+            for (const plant of filteredPlants) {
+                const card = document.createElement('div');
+                card.classList.add('collection-card');
+                
+                card.innerHTML = `
+                    <div class="collection-card-image">
+                        ${plant.svg}
+                    </div>
+                    <div class="collection-card-content">
+                        <div class="collection-card-title">
+                            <span>${plant.name}</span>
+                            <span class="collection-card-rarity">${plant.rarity}</span>
+                        </div>
+                        <div>${plant.description.substring(0, 80)}${plant.description.length > 80 ? '...' : ''}</div>
+                        <div class="collection-card-stats">
+                            <div class="collection-card-stat">
+                                <span class="collection-card-stat-label">Energy:</span>
+                                <span>${plant.yield.energy}</span>
+                            </div>
+                            <div class="collection-card-stat">
+                                <span class="collection-card-stat-label">Minerals:</span>
+                                <span>${plant.yield.minerals}</span>
+                            </div>
+                            <div class="collection-card-stat">
+                                <span class="collection-card-stat-label">Seeds:</span>
+                                <span>${plant.yield.seeds}</span>
+                            </div>
+                            <div class="collection-card-stat">
+                                <span class="collection-card-stat-label">Research:</span>
+                                <span>${plant.yield.research}</span>
+                            </div>
+                        </div>
+                    </div>
+                `;
+                
+                card.addEventListener('click', () => {
+                    openPlantDetailModal(plant.id);
+                });
+                
+                plantCollection.appendChild(card);
+            }
+        }
+        
+        // Render research
+        function renderResearch() {
+            researchGrid.innerHTML = '';
+            
+            // Filter to show only unlocked research
+            const availableResearch = researchDatabase.filter(research => 
+                research.unlocked && !research.completed
+            );
+            
+            if (availableResearch.length === 0) {
+                researchGrid.innerHTML = '<div class="no-results">No research available at this time</div>';
+                return;
+            }
+            
+            // Create research cards
+            for (const research of availableResearch) {
+                const card = document.createElement('div');
+                card.classList.add('research-card');
+                
+                const canAfford = gameData.resources.research >= research.cost;
+                
+                card.innerHTML = `
+                    <div class="research-card-header">
+                        <span class="research-card-title">${research.name}</span>
+                        <span class="research-card-cost">${research.cost} 🔬</span>
+                    </div>
+                    <div class="research-card-description">${research.description}</div>
+                    <div class="research-card-benefits">
+                        ${research.benefits.map(benefit => 
+                            `<div class="research-benefit">${benefit}</div>`
+                        ).join('')}
+                    </div>
+                    <button class="research-card-button" ${canAfford ? '' : 'disabled'}>
+                        ${canAfford ? 'Research' : 'Not enough points'}
+                    </button>
+                `;
+                
+                const researchButton = card.querySelector('.research-card-button');
+                researchButton.addEventListener('click', () => {
+                    if (canAfford) {
+                        completeResearch(research.id);
+                    } else {
+                        showToast(`Need ${research.cost} research points`, 'warning');
+                    }
+                });
+                
+                researchGrid.appendChild(card);
+            }
+            
+            // Add completed research (collapsed)
+            if (gameData.completedResearch.length > 0) {
+                const completedSection = document.createElement('div');
+                completedSection.classList.add('completed-research-section');
+                completedSection.innerHTML = `
+                    <h3>Completed Research (${gameData.completedResearch.length})</h3>
+                    <div class="completed-research-list">
+                        ${gameData.completedResearch.map(id => {
+                            const research = getResearchById(id);
+                            return `<div class="completed-research-item">${research ? research.name : id}</div>`;
+                        }).join('')}
+                    </div>
+                `;
+                
+                researchGrid.appendChild(completedSection);
+            }
+        }
+        
+        // Render achievements
+        function renderAchievements() {
+            const achievementsGrid = document.getElementById('achievements-grid');
+            if (!achievementsGrid) return;
+            
+            achievementsGrid.innerHTML = '';
+            
+            for (const achievement of achievementDatabase) {
+                const card = document.createElement('div');
+                card.classList.add('achievement-card');
+                
+                if (achievement.unlocked) {
+                    card.classList.add('unlocked');
+                }
+                
+                card.innerHTML = `
+                    <div class="achievement-icon">🏆</div>
+                    <div class="achievement-content">
+                        <div class="achievement-title">${achievement.name}</div>
+                        <div class="achievement-description">${achievement.description}</div>
+                    </div>
+                `;
+                
+                achievementsGrid.appendChild(card);
+            }
+        }
+        
+        // Open plant detail modal
+        function openPlantDetailModal(plantId, plotIndex = null) {
+            const plant = getPlantById(plantId);
+            if (!plant) return;
+            
+            const plot = plotIndex !== null ? gameData.garden[plotIndex] : null;
+            
+            plantDetailTitle.textContent = plant.name;
+            
+            // Create modal content
+            let detailContent = `
+                <div class="plant-detail-header">
+                    <div class="plant-detail-image">
+                        ${plant.svg}
+                    </div>
+                    <div class="plant-detail-info">
+                        <div class="plant-detail-name">${plant.name}</div>
+                        <div class="plant-detail-type">${plant.rarity.charAt(0).toUpperCase() + plant.rarity.slice(1)} Plant</div>
+                        <div class="plant-detail-stats">
+                            <div class="plant-detail-stat">
+                                <span class="plant-detail-stat-label">Growth Time:</span>
+                                <span>${Math.floor(plant.growthTime / 60)} min ${plant.growthTime % 60} sec</span>
+                            </div>
+                            <div class="plant-detail-stat">
+                                <span class="plant-detail-stat-label">Seed Cost:</span>
+                                <span>${plant.seedCost}</span>
+                            </div>
+                            <div class="plant-detail-stat">
+                                <span class="plant-detail-stat-label">Optimal Radiation:</span>
+                                <span>${plant.optimalConditions.radiation}%</span>
+                            </div>
+                            <div class="plant-detail-stat">
+                                <span class="plant-detail-stat-label">Optimal Gravity:</span>
+                                <span>${plant.optimalConditions.gravity}%</span>
+                            </div>
+                            <div class="plant-detail-stat">
+                                <span class="plant-detail-stat-label">Optimal Atmosphere:</span>
+                                <span>${plant.optimalConditions.atmosphere}%</span>
+                            </div>
+                            <div class="plant-detail-stat">
+                                <span class="plant-detail-stat-label">Tolerance:</span>
+                                <span>±${plant.tolerance}%</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="plant-detail-description">
+                    ${plant.description}
+                </div>
+                <div class="plant-detail-yields">
+                    <div class="plant-detail-yields-title">Resource Yields:</div>
+                    <div class="plant-detail-yields-list">
+                        <div class="plant-yield">
+                            <div class="resource-icon energy">⚡</div>
+                            <span>${plant.yield.energy} Energy</span>
+                        </div>
+                        <div class="plant-yield">
+                            <div class="resource-icon minerals">🔷</div>
+                            <span>${plant.yield.minerals} Minerals</span>
+                        </div>
+                        <div class="plant-yield">
+                            <div class="resource-icon seeds">🌱</div>
+                            <span>${plant.yield.seeds} Seeds</span>
+                        </div>
+                        <div class="plant-yield">
+                            <div class="resource-icon research">🔬</div>
+                            <span>${plant.yield.research} Research</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="plant-detail-stages">
+                    <div class="plant-detail-stages-title">Growth Stages:</div>
+                    <div class="stage-timeline">
+                        ${plant.stages.map((stage, index) => {
+                            const isActive = plot && plot.growthProgress >= (index * (100 / plant.stages.length));
+                            return `<div class="stage-point ${isActive ? 'active' : ''}"></div>`;
+                        }).join('<div class="stage-connector"></div>')}
+                    </div>
+                    <div class="stage-labels">
+                        ${plant.stages.map(stage => 
+                            `<div class="stage-label">${stage}</div>`
+                        ).join('')}
+                    </div>
+                </div>
+            `;
+            
+            plantDetailContent.innerHTML = detailContent;
+            
+            // Show/hide harvest button based on plant readiness
+            if (plot && plot.plantId === plantId) {
+                plantDetailHarvestBtn.style.display = plot.growthProgress >= 100 ? 'block' : 'none';
+            } else {
+                plantDetailHarvestBtn.style.display = 'none';
+            }
+            
+            // Show modal
+            plantDetailModal.classList.add('active');
+        }
+        
+        // Open plant selection modal
+        function openPlantSelectionModal() {
+            plantSelectionGrid.innerHTML = '';
+            
+            // Filter plants that the player can plant
+            const availablePlants = plantDatabase.filter(plant => 
+                gameData.discoveredPlants.includes(plant.id) && gameData.resources.seeds >= plant.seedCost
+            );
+            
+            if (availablePlants.length === 0) {
+                plantSelectionGrid.innerHTML = '<div class="no-results">No plants available to plant. Collect more seeds!</div>';
+                gameData.selectedPlant = null;
+                plantSelectionConfirm.disabled = true;
+            } else {
+                // Create plant selection items
+                for (const plant of availablePlants) {
+                    const selectionItem = document.createElement('div');
+                    selectionItem.classList.add('plant-selection-item');
+                    selectionItem.dataset.id = plant.id;
+                    
+                    selectionItem.innerHTML = `
+                        <div class="plant-selection-image">
+                            ${plant.svg}
+                        </div>
+                        <div class="plant-selection-name">${plant.name}</div>
+                        <div class="plant-selection-cost">
+                            <div class="resource-icon seeds">🌱</div>
+                            <span>${plant.seedCost}</span>
+                        </div>
+                    `;
+                    
+                    selectionItem.addEventListener('click', () => {
+                        // Update selected plant
+                        gameData.selectedPlant = plant.id;
+                        
+                        // Update UI
+                        document.querySelectorAll('.plant-selection-item').forEach(item => {
+                            item.classList.remove('selected');
+                        });
+                        selectionItem.classList.add('selected');
+                        
+                        // Enable confirm button
+                        plantSelectionConfirm.disabled = false;
+                    });
+                    
+                    plantSelectionGrid.appendChild(selectionItem);
+                }
+            }
+            
+            // Show modal
+            plantSelectionModal.classList.add('active');
+        }
+        
+        // Show toast notification
+        function showToast(message, type = 'info') {
+            const toast = document.createElement('div');
+            toast.classList.add('toast', type);
+            
+            let icon = '';
+            switch (type) {
+                case 'success':
+                    icon = '✅';
+                    break;
+                case 'warning':
+                    icon = '⚠️';
+                    break;
+                case 'error':
+                    icon = '❌';
+                    break;
+                default:
+                    icon = 'ℹ️';
+            }
+            
+            toast.innerHTML = `
+                <span class="toast-icon">${icon}</span>
+                <span>${message}</span>
+            `;
+            
+            toastContainer.appendChild(toast);
+            
+            // Remove toast after 3 seconds
+            setTimeout(() => {
+                toast.remove();
+            }, 3000);
+        }
+        
+        // // Export game save
+        // function exportGameSave() {
+        //     try {
+        //         const saveData = JSON.stringify(gameData);
+        //         const blob = new Blob([saveData], { type: 'application/json' });
+        //         const url = URL.createObjectURL(blob);
+                
+        //         const link = document.createElement('a');
+        //         link.href = url;
+        //         link.download = 'celestial_garden_save.json';
+        //         document.body.appendChild(link);
+        //         link.click();
+        //         document.body.removeChild(link);
+                
+        //         showToast('Game save exported successfully', 'success');
+        //     } catch (error) {
+        //         showToast('Failed to export game save', 'error');
+        //         console.error('Export error:', error);
+        //     }
+        // }
+        
+        // // Import game save
+        // function importGameSave() {
+        //     const input = document.createElement('input');
+        //     input.type = 'file';
+        //     input.accept = '.json';
+            
+        //     input.addEventListener('change', (event) => {
+        //         const file = event.target.files[0];
+        //         if (!file) return;
+                
+        //         const reader = new FileReader();
+        //         reader.onload = (e) => {
+        //             try {
+        //                 const saveData = JSON.parse(e.target.result);
+                        
+        //                 // Validate save data
+        //                 if (!saveData.version || !saveData.player || !saveData.resources || !saveData.garden) {
+        //                     throw new Error('Invalid save file format');
+        //                 }
+                        
+        //                 // Apply save data
+        //                 Object.assign(gameData, saveData);
+                        
+        //                 // Update game state
+        //                 updateResourceRates();
+        //                 renderGame();
+                        
+        //                 showToast('Game save imported successfully', 'success');
+        //                 saveGameData();
+        //             } catch (error) {
+        //                 showToast('Failed to import game save: ' + error.message, 'error');
+        //                 console.error('Import error:', error);
+        //             }
+        //         };
+                
+        //         reader.readAsText(file);
+        //     });
+            
+        //     input.click();
+        // }
+        
+        // Helper function to get plant by ID
+        function getPlantById(plantId) {
+            return plantDatabase.find(plant => plant.id === plantId);
+        }
+        
+        // Helper function to get research by ID
+        function getResearchById(researchId) {
+            return researchDatabase.find(research => research.id === researchId);
+        }
+        
+        // Helper function to get achievement by ID
+        function getAchievementById(achievementId) {
+            return achievementDatabase.find(achievement => achievement.id === achievementId);
+        }
+        
+        // Initialize the game when page loads
+        window.addEventListener('load', initGame);
+    </script>
+</body>
+</html>
