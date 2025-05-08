@@ -1,0 +1,861 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Space Explorer: Galactic Archive</title>
+    <style>
+        /* CSS Variables */
+        :root {
+            --primary-dark: #0a0e17;
+            --secondary-dark: #1a1e2e;
+            --accent-color: #5e17eb;
+            --text-light: #e1e6fa;
+            --text-dark: #0a0e17;
+            --success-color: #2ecc71;
+            --warning-color: #e67e22;
+            --danger-color: #e74c3c;
+            --border-radius: 8px;
+            --container-width: 1200px;
+        }
+
+        /* Global Reset */
+        *, *::before, *::after {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        /* Base Styling */
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: var(--primary-dark);
+            color: var(--text-light);
+            line-height: 1.6;
+            background-image: 
+                radial-gradient(circle, rgba(255,255,255,0.05) 1px, transparent 1px);
+            background-size: 50px 50px;
+            min-height: 100vh;
+            transition: all 0.3s ease;
+        }
+
+        /* Typography */
+        h1, h2, h3, h4, h5, h6 {
+            margin-bottom: 1rem;
+            font-weight: 600;
+            line-height: 1.2;
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            margin-bottom: 1.5rem;
+            text-align: center;
+        }
+
+        h2 {
+            font-size: 1.75rem;
+            margin-top: 1rem;
+        }
+
+        h3 {
+            font-size: 1.5rem;
+        }
+
+        /* Layout Containers */
+        .wrapper {
+            max-width: var(--container-width);
+            margin: 0 auto;
+            padding: 1rem;
+        }
+
+        .container {
+            background-color: var(--secondary-dark);
+            border-radius: var(--border-radius);
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+
+        /* Header */
+        header {
+            padding: 1rem 0;
+            margin-bottom: 2rem;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: var(--accent-color);
+        }
+
+        /* Navigation */
+        nav {
+            width: 100%;
+            margin: 1rem 0;
+        }
+
+        nav ul {
+            display: flex;
+            justify-content: center;
+            list-style: none;
+            gap: 1.5rem;
+            flex-wrap: wrap;
+        }
+
+        nav a {
+            color: var(--text-light);
+            text-decoration: none;
+            padding: 0.5rem 1rem;
+            border-radius: var(--border-radius);
+            transition: background-color 0.3s;
+        }
+
+        nav a:hover {
+            background-color: var(--accent-color);
+        }
+
+        /* Forms */
+        form {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group {
+            margin-bottom: 1rem;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+        }
+
+        input[type="text"], 
+        input[type="search"], 
+        select {
+            width: 100%;
+            padding: 0.75rem;
+            border: 2px solid #2a2e3e;
+            border-radius: var(--border-radius);
+            background-color: #1a1e2e;
+            color: var(--text-light);
+            font-size: 1rem;
+            transition: border-color 0.3s;
+        }
+
+        input[type="text"]:focus,
+        input[type="search"]:focus, 
+        select:focus {
+            border-color: var(--accent-color);
+            outline: none;
+        }
+
+        .search-container {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .search-container input {
+            flex-grow: 1;
+        }
+
+        button {
+            background-color: var(--accent-color);
+            color: white;
+            padding: 0.75rem 1.5rem;
+            border: none;
+            border-radius: var(--border-radius);
+            cursor: pointer;
+            font-size: 1rem;
+            transition: background-color 0.3s;
+        }
+
+        button:hover {
+            background-color: #4912c5;
+        }
+
+        /* Grid Layout for Celestial Objects */
+        .celestial-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin-top: 1.5rem;
+        }
+
+        .celestial-card {
+            background: linear-gradient(145deg, #1e2235, #151a2c);
+            border-radius: var(--border-radius);
+            overflow: hidden;
+            transition: transform 0.3s, box-shadow 0.3s;
+            position: relative;
+        }
+
+        .celestial-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
+        }
+
+        .celestial-img {
+            width: 100%;
+            height: 180px;
+            background-color: #0d1117;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 3rem;
+            overflow: hidden;
+        }
+
+        .celestial-info {
+            padding: 1rem;
+        }
+
+        .celestial-name {
+            font-size: 1.25rem;
+            margin-bottom: 0.5rem;
+            color: var(--accent-color);
+        }
+
+        .celestial-detail {
+            font-size: 0.85rem;
+            color: #a0a8c0;
+            margin-bottom: 0.25rem;
+        }
+
+        .celestial-actions {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 1rem;
+        }
+
+        .celestial-actions button {
+            padding: 0.5rem;
+            font-size: 0.85rem;
+            background-color: transparent;
+            border: 1px solid var(--accent-color);
+            color: var(--accent-color);
+        }
+
+        .celestial-actions button:hover {
+            background-color: var(--accent-color);
+            color: white;
+        }
+
+        /* Recent Searches */
+        .recent-searches {
+            margin-top: 1rem;
+        }
+
+        .search-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin-top: 0.5rem;
+        }
+
+        .search-tag {
+            background-color: #2a2e3e;
+            color: var(--text-light);
+            padding: 0.25rem 0.75rem;
+            border-radius: 1rem;
+            font-size: 0.85rem;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .search-tag:hover {
+            background-color: var(--accent-color);
+        }
+
+        /* Theme Toggle */
+        .theme-toggle {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            background-color: transparent;
+            border: 1px solid var(--text-light);
+            color: var(--text-light);
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .theme-toggle:hover {
+            background-color: rgba(255, 255, 255, 0.1);
+        }
+
+        /* Light Theme */
+        body.light-theme {
+            background-color: #f5f7fa;
+            color: var(--text-dark);
+        }
+
+        body.light-theme .container {
+            background-color: white;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        body.light-theme nav a {
+            color: var(--text-dark);
+        }
+
+        body.light-theme input[type="text"],
+        body.light-theme input[type="search"], 
+        body.light-theme select {
+            background-color: white;
+            border-color: #d8dce6;
+            color: var(--text-dark);
+        }
+
+        body.light-theme .celestial-card {
+            background: linear-gradient(145deg, #ffffff, #f0f3f9);
+        }
+
+        body.light-theme .celestial-detail {
+            color: #667190;
+        }
+
+        body.light-theme .search-tag {
+            background-color: #e9ecf3;
+            color: var(--text-dark);
+        }
+
+        body.light-theme .theme-toggle {
+            border-color: var(--text-dark);
+            color: var(--text-dark);
+        }
+
+        /* Alerts & Feedback */
+        .alert {
+            padding: 1rem;
+            border-radius: var(--border-radius);
+            margin-bottom: 1rem;
+            display: none;
+        }
+
+        .alert-success {
+            background-color: rgba(46, 204, 113, 0.2);
+            border: 1px solid var(--success-color);
+            color: var(--success-color);
+        }
+
+        .alert-warning {
+            background-color: rgba(230, 126, 34, 0.2);
+            border: 1px solid var(--warning-color);
+            color: var(--warning-color);
+        }
+
+        .alert-danger {
+            background-color: rgba(231, 76, 60, 0.2);
+            border: 1px solid var(--danger-color);
+            color: var(--danger-color);
+        }
+
+        /* Footer */
+        footer {
+            margin-top: 3rem;
+            padding: 1.5rem 0;
+            text-align: center;
+            font-size: 0.85rem;
+            color: #a0a8c0;
+        }
+
+        /* Loader animation */
+        .loader {
+            display: none;
+            width: 48px;
+            height: 48px;
+            border: 5px solid var(--accent-color);
+            border-bottom-color: transparent;
+            border-radius: 50%;
+            animation: rotation 1s linear infinite;
+            margin: 2rem auto;
+        }
+
+        @keyframes rotation {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* Responsive Media Queries */
+        @media (max-width: 768px) {
+            h1 { 
+                font-size: 2rem; 
+            }
+            
+            .celestial-grid {
+                grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+            }
+        }
+
+        @media (max-width: 480px) {
+            h1 { 
+                font-size: 1.75rem; 
+            }
+            
+            .celestial-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            nav ul {
+                flex-direction: column;
+                align-items: center;
+                gap: 0.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <button class="theme-toggle" id="themeToggle">🌓</button>
+    
+    <div class="wrapper">
+        <header>
+            <div class="logo">
+                <span>✦</span>
+                <span>Space Explorer: Galactic Archive</span>
+                <span>✦</span>
+            </div>
+            <nav>
+                <ul>
+                    <li><a href="#home" class="active">Home</a></li>
+                    <li><a href="#discover">Discover</a></li>
+                    <li><a href="#collection">My Collection</a></li>
+                    <li><a href="#about">About</a></li>
+                </ul>
+            </nav>
+        </header>
+        
+        <main>
+            <section id="home" class="container">
+                <h1>Explore the Universe</h1>
+                <p>Welcome to Space Explorer! Search for celestial objects across the galaxy and build your own collection of cosmic discoveries.</p>
+                
+                <form id="searchForm">
+                    <div class="search-container">
+                        <input type="search" id="searchInput" placeholder="Search planets, stars, galaxies..." aria-label="Search for celestial objects">
+                        <button type="submit">Search</button>
+                    </div>
+                </form>
+                
+                <div id="alertBox" class="alert"></div>
+                
+                <div class="recent-searches">
+                    <h3>Recent Searches</h3>
+                    <div id="recentSearches" class="search-tags">
+                        <!-- Recent searches will be dynamically inserted here -->
+                    </div>
+                </div>
+                
+                <div id="loader" class="loader"></div>
+                
+                <div id="searchResults">
+                    <h2>Discover Celestial Objects</h2>
+                    <div class="celestial-grid" id="celestialGrid">
+                        <!-- Celestial objects will be dynamically inserted here -->
+                    </div>
+                </div>
+            </section>
+            
+            <section id="collection" class="container" style="display:none;">
+                <h2>My Collection</h2>
+                <p>Your saved celestial discoveries.</p>
+                <div class="celestial-grid" id="collectionGrid">
+                    <!-- Saved objects will be displayed here -->
+                </div>
+            </section>
+            
+            <section id="about" class="container" style="display:none;">
+                <h2>About Space Explorer</h2>
+                <p>Space Explorer: Galactic Archive is a personal catalog of celestial objects. Search, discover, and save your cosmic findings!</p>
+                <p>This application was built using:</p>
+                <ul>
+                    <li>HTML5 with semantic elements and proper structure</li>
+                    <li>CSS3 with responsive design, flexbox, and CSS variables</li>
+                    <li>JavaScript with local storage and cookie management</li>
+                </ul>
+            </section>
+        </main>
+        
+        <footer>
+            <p>Space Explorer: Galactic Archive &copy; 2025</p>
+        </footer>
+    </div>
+
+    <script>
+        // DOM Elements
+        const searchForm = document.getElementById('searchForm');
+        const searchInput = document.getElementById('searchInput');
+        const celestialGrid = document.getElementById('celestialGrid');
+        const collectionGrid = document.getElementById('collectionGrid');
+        const recentSearchesContainer = document.getElementById('recentSearches');
+        const alertBox = document.getElementById('alertBox');
+        const loader = document.getElementById('loader');
+        const themeToggle = document.getElementById('themeToggle');
+        const navLinks = document.querySelectorAll('nav a');
+        const mainSections = document.querySelectorAll('main > section');
+        
+        // Global variables
+        const MAX_RECENT_SEARCHES = 6;
+        let celestialObjects = [];
+        let recentSearches = [];
+        let userCollection = [];
+        let celestialTypes = ['planet', 'star', 'moon', 'asteroid', 'galaxy', 'nebula', 'comet', 'black-hole'];
+        
+        // Theme preference
+        let isDarkTheme = true;
+
+        // Mock database of celestial objects (in a real app, this would come from an API)
+        const celestialDatabase = [
+            { id: 1, name: 'Alpha Centauri', type: 'star', distance: '4.37 light years', discovered: '1915', description: 'The closest star system to our Solar System.' },
+            { id: 2, name: 'Kepler-452b', type: 'planet', distance: '1,400 light years', discovered: '2015', description: 'Earth-like exoplanet in the habitable zone.' },
+            { id: 3, name: 'Andromeda', type: 'galaxy', distance: '2.537 million light years', discovered: '964', description: 'The nearest major galaxy to the Milky Way.' },
+            { id: 4, name: 'Betelgeuse', type: 'star', distance: '642.5 light years', discovered: '1836', description: 'A red supergiant star nearing the end of its life.' },
+            { id: 5, name: 'Europa', type: 'moon', distance: '628.3 million km', discovered: '1610', description: 'A moon of Jupiter with subsurface ocean.' },
+            { id: 6, name: 'Crab Nebula', type: 'nebula', distance: '6,500 light years', discovered: '1731', description: 'Remnant of a supernova observed in 1054.' },
+            { id: 7, name: 'Sagittarius A*', type: 'black-hole', distance: '26,000 light years', discovered: '1974', description: 'Supermassive black hole at the center of our galaxy.' },
+            { id: 8, name: 'Halley\'s Comet', type: 'comet', distance: 'Variable', discovered: '240 BC', description: 'Short-period comet visible every 75-76 years.' },
+            { id: 9, name: 'Titan', type: 'moon', distance: '1.2 billion km', discovered: '1655', description: 'Saturn\'s largest moon with dense atmosphere.' },
+            { id: 10, name: 'TRAPPIST-1e', type: 'planet', distance: '39 light years', discovered: '2017', description: 'Potentially habitable exoplanet.' },
+            { id: 11, name: 'Vega', type: 'star', distance: '25 light years', discovered: '1850', description: 'One of the brightest stars in the night sky.' },
+            { id: 12, name: 'Ceres', type: 'asteroid', distance: '413 million km', discovered: '1801', description: 'The largest object in the asteroid belt.' }
+        ];
+
+        // Initialize application
+        function initApp() {
+            loadFromLocalStorage();
+            loadThemePreference();
+            renderCelestialObjects(celestialDatabase);
+            renderRecentSearches();
+            setupEventListeners();
+        }
+
+        // Event Listeners
+        function setupEventListeners() {
+            // Search form submission
+            searchForm.addEventListener('submit', handleSearch);
+            
+            // Theme toggle
+            themeToggle.addEventListener('click', toggleTheme);
+            
+            // Navigation
+            navLinks.forEach(link => {
+                link.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    const targetId = this.getAttribute('href').substring(1);
+                    
+                    // Update active link
+                    navLinks.forEach(link => link.classList.remove('active'));
+                    this.classList.add('active');
+                    
+                    // Show target section, hide others
+                    mainSections.forEach(section => {
+                        section.style.display = section.id === targetId ? 'block' : 'none';
+                    });
+                    
+                    // If navigating to collection, render collection
+                    if (targetId === 'collection') {
+                        renderCollection();
+                    }
+                });
+            });
+        }
+
+        // Handle search
+        function handleSearch(e) {
+            e.preventDefault();
+            const searchTerm = searchInput.value.trim().toLowerCase();
+            
+            if (searchTerm === '') {
+                showAlert('Please enter a search term.', 'warning');
+                return;
+            }
+            
+            // Show loader
+            loader.style.display = 'block';
+            
+            // Simulate API delay
+            setTimeout(() => {
+                const results = celestialDatabase.filter(item => 
+                    item.name.toLowerCase().includes(searchTerm) || 
+                    item.type.toLowerCase().includes(searchTerm) ||
+                    item.description.toLowerCase().includes(searchTerm)
+                );
+                
+                // Hide loader
+                loader.style.display = 'none';
+                
+                if (results.length === 0) {
+                    showAlert('No celestial objects found. Try another search.', 'warning');
+                    celestialGrid.innerHTML = '<p>No results found.</p>';
+                } else {
+                    renderCelestialObjects(results);
+                    showAlert(`Found ${results.length} celestial objects.`, 'success');
+                    
+                    // Add to recent searches if not already there
+                    if (!recentSearches.includes(searchTerm)) {
+                        addToRecentSearches(searchTerm);
+                    }
+                }
+            }, 800);
+        }
+
+        // Add to recent searches
+        function addToRecentSearches(searchTerm) {
+            // Remove if already exists (to move it to the front)
+            const existingIndex = recentSearches.indexOf(searchTerm);
+            if (existingIndex !== -1) {
+                recentSearches.splice(existingIndex, 1);
+            }
+            
+            // Add to the beginning of the array
+            recentSearches.unshift(searchTerm);
+            
+            // Keep only the most recent searches
+            if (recentSearches.length > MAX_RECENT_SEARCHES) {
+                recentSearches.pop();
+            }
+            
+            // Save to local storage
+            saveToLocalStorage();
+            
+            // Update the display
+            renderRecentSearches();
+        }
+
+        // Render recent searches
+        function renderRecentSearches() {
+            recentSearchesContainer.innerHTML = '';
+            
+            if (recentSearches.length === 0) {
+                recentSearchesContainer.innerHTML = '<p>No recent searches</p>';
+                return;
+            }
+            
+            recentSearches.forEach(term => {
+                const tag = document.createElement('span');
+                tag.classList.add('search-tag');
+                tag.textContent = term;
+                
+                // Click to search again
+                tag.addEventListener('click', () => {
+                    searchInput.value = term;
+                    searchForm.dispatchEvent(new Event('submit'));
+                });
+                
+                recentSearchesContainer.appendChild(tag);
+            });
+        }
+
+        // Render celestial objects
+        function renderCelestialObjects(objects) {
+            celestialGrid.innerHTML = '';
+            
+            objects.forEach(obj => {
+                const card = createCelestialCard(obj);
+                celestialGrid.appendChild(card);
+            });
+        }
+
+        // Create celestial card
+        function createCelestialCard(obj) {
+            const card = document.createElement('div');
+            card.classList.add('celestial-card');
+            
+            // Emoji based on object type
+            let emoji;
+            switch(obj.type) {
+                case 'planet': emoji = '🪐'; break;
+                case 'star': emoji = '⭐'; break;
+                case 'moon': emoji = '🌙'; break;
+                case 'asteroid': emoji = '☄️'; break;
+                case 'galaxy': emoji = '🌌'; break;
+                case 'nebula': emoji = '✨'; break;
+                case 'comet': emoji = '💫'; break;
+                case 'black-hole': emoji = '⚫'; break;
+                default: emoji = '🔭';
+            }
+            
+            // Check if object is in collection
+            const isInCollection = userCollection.some(item => item.id === obj.id);
+            
+            card.innerHTML = `
+                <div class="celestial-img">${emoji}</div>
+                <div class="celestial-info">
+                    <h3 class="celestial-name">${obj.name}</h3>
+                    <p class="celestial-detail">Type: ${obj.type}</p>
+                    <p class="celestial-detail">Distance: ${obj.distance}</p>
+                    <p class="celestial-detail">Discovered: ${obj.discovered}</p>
+                    <p>${obj.description}</p>
+                    <div class="celestial-actions">
+                        <button class="details-btn" data-id="${obj.id}">Details</button>
+                        <button class="collection-btn" data-id="${obj.id}">
+                            ${isInCollection ? 'Remove from Collection' : 'Add to Collection'}
+                        </button>
+                    </div>
+                </div>
+            `;
+            
+            // Add event listeners for the buttons
+            setTimeout(() => {
+                const detailsBtn = card.querySelector('.details-btn');
+                const collectionBtn = card.querySelector('.collection-btn');
+                
+                detailsBtn.addEventListener('click', () => showObjectDetails(obj.id));
+                collectionBtn.addEventListener('click', () => toggleCollection(obj.id));
+            }, 0);
+            
+            return card;
+        }
+
+        // Show object details (modal or alert for simplicity)
+        function showObjectDetails(id) {
+            const obj = celestialDatabase.find(item => item.id === id);
+            if (obj) {
+                showAlert(`Details for ${obj.name}: ${obj.description}`, 'success');
+            }
+        }
+
+        // Toggle collection status
+        function toggleCollection(id) {
+            const obj = celestialDatabase.find(item => item.id === id);
+            if (!obj) return;
+            
+            const existingIndex = userCollection.findIndex(item => item.id === id);
+            
+            if (existingIndex !== -1) {
+                // Remove from collection
+                userCollection.splice(existingIndex, 1);
+                showAlert(`${obj.name} removed from your collection.`, 'warning');
+            } else {
+                // Add to collection
+                userCollection.push(obj);
+                showAlert(`${obj.name} added to your collection!`, 'success');
+            }
+            
+            // Save to local storage
+            saveToLocalStorage();
+            
+            // Re-render current view
+            if (document.getElementById('collection').style.display === 'block') {
+                renderCollection();
+            } else {
+                renderCelestialObjects(celestialDatabase);
+            }
+        }
+
+        // Render user collection
+        function renderCollection() {
+            collectionGrid.innerHTML = '';
+            
+            if (userCollection.length === 0) {
+                collectionGrid.innerHTML = '<p>Your collection is empty. Start exploring to add celestial objects!</p>';
+                return;
+            }
+            
+            userCollection.forEach(obj => {
+                const card = createCelestialCard(obj);
+                collectionGrid.appendChild(card);
+            });
+        }
+
+        // Show alert message
+        function showAlert(message, type) {
+            alertBox.textContent = message;
+            alertBox.className = 'alert'; // Reset
+            alertBox.classList.add(`alert-${type}`);
+            alertBox.style.display = 'block';
+            
+            // Hide after 3 seconds
+            setTimeout(() => {
+                alertBox.style.display = 'none';
+            }, 3000);
+        }
+
+        // Toggle theme
+        function toggleTheme() {
+            isDarkTheme = !isDarkTheme;
+            
+            if (isDarkTheme) {
+                document.body.classList.remove('light-theme');
+                themeToggle.textContent = '🌓';
+            } else {
+                document.body.classList.add('light-theme');
+                themeToggle.textContent = '☀️';
+            }
+            
+            // Save theme preference in a cookie
+            setCookie('theme', isDarkTheme ? 'dark' : 'light', 30);
+        }
+
+        // Load theme preference from cookie
+        function loadThemePreference() {
+            const theme = getCookie('theme');
+            if (theme === 'light') {
+                isDarkTheme = false;
+                document.body.classList.add('light-theme');
+                themeToggle.textContent = '☀️';
+            }
+        }
+
+        // Save to local storage
+        function saveToLocalStorage() {
+            localStorage.setItem('spaceExplorer_recentSearches', JSON.stringify(recentSearches));
+            localStorage.setItem('spaceExplorer_collection', JSON.stringify(userCollection));
+        }
+
+        // Load from local storage
+        function loadFromLocalStorage() {
+            // Load recent searches
+            const savedSearches = localStorage.getItem('spaceExplorer_recentSearches');
+            if (savedSearches) {
+                recentSearches = JSON.parse(savedSearches);
+            }
+            
+            // Load collection
+            const savedCollection = localStorage.getItem('spaceExplorer_collection');
+            if (savedCollection) {
+                userCollection = JSON.parse(savedCollection);
+            }
+        }
+
+        // Cookie functions
+        function setCookie(name, value, days) {
+            const d = new Date();
+            d.setTime(d.getTime() + (days * 24 * 60 * 60 * 1000));
+            const expires = "expires=" + d.toUTCString();
+            document.cookie = name + "=" + value + ";" + expires + ";path=/";
+        }
+
+        function getCookie(name) {
+            const cookieName = name + "=";
+            const decodedCookie = decodeURIComponent(document.cookie);
+            const cookieArray = decodedCookie.split(';');
+            
+            for (let i = 0; i < cookieArray.length; i++) {
+                let cookie = cookieArray[i];
+                while (cookie.charAt(0) === ' ') {
+                    cookie = cookie.substring(1);
+                }
+                
+                if (cookie.indexOf(cookieName) === 0) {
+                    return cookie.substring(cookieName.length, cookie.length);
+                }
+            }
+            return "";
+        }
+
+        // Initialize the application
+        initApp();
+    </script>
+</body>
+</html>
